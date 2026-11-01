@@ -1,1 +1,179 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 @import 'tailwindcss';
+
+/* =========================================
+   1. LIGHT THEME
+========================================= */
+
+:root {
+  color-scheme: light;
+
+  /* Brand */
+  --primary: #8065b2;
+  --primary-hover: #70549f;
+  --primary-soft: #f0eaf6;
+
+  /* Backgrounds */
+  --background: #f9f7fa;
+  --surface: #fdfcfe;
+  --surface-secondary: #f5f1f8;
+  --surface-hover: #f0eaf4;
+
+  /* Text */
+  --foreground: #41334d;
+  --muted-foreground: #84798c;
+
+  /* Borders */
+  --border: #eae4ee;
+
+  /* Status */
+  --success: #16a34a;
+  --warning: #d97706;
+  --danger: #dc2626;
+  --info: #64748b;
+
+  /* Priority */
+  --priority-low: #64748b;
+  --priority-medium: #d97706;
+  --priority-high: #dc2626;
+
+  /* Effects */
+  --shadow-sm: 0 1px 2px rgb(65 51 77 / 5%);
+  --shadow-md: 0 4px 12px rgb(65 51 77 / 8%);
+
+  /* Shape */
+  --app-radius-sm: 6px;
+  --app-radius-md: 10px;
+  --app-radius-lg: 14px;
+  --app-radius-xl: 20px;
+}
+
+/* =========================================
+   2. DARK THEME
+========================================= */
+
+.dark {
+  color-scheme: dark;
+
+  --primary: #ad91d9;
+  --primary-hover: #bca5e2;
+  --primary-soft: #3b3049;
+
+  --background: #19151e;
+  --surface: #211c28;
+  --surface-secondary: #2a2332;
+  --surface-hover: #342a3e;
+
+  --foreground: #f4eff8;
+  --muted-foreground: #aa9db5;
+
+  --border: #3c3247;
+
+  --success: #4ade80;
+  --warning: #fbbf24;
+  --danger: #f87171;
+  --info: #94a3b8;
+
+  --priority-low: #94a3b8;
+  --priority-medium: #fbbf24;
+  --priority-high: #f87171;
+
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 15%);
+  --shadow-md: 0 4px 12px rgb(0 0 0 / 20%);
+}
+
+/* =========================================
+   3. TAILWIND DESIGN TOKENS
+========================================= */
+
+@theme inline {
+  --font-sans: 'Inter', sans-serif;
+
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-soft: var(--primary-soft);
+
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-secondary: var(--surface-secondary);
+  --color-surface-hover: var(--surface-hover);
+
+  --color-foreground: var(--foreground);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-border: var(--border);
+
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+  --color-info: var(--info);
+
+  --color-priority-low: var(--priority-low);
+  --color-priority-medium: var(--priority-medium);
+  --color-priority-high: var(--priority-high);
+
+  --radius-sm: var(--app-radius-sm);
+  --radius-md: var(--app-radius-md);
+  --radius-lg: var(--app-radius-lg);
+  --radius-xl: var(--app-radius-xl);
+}
+
+/* =========================================
+   4. GLOBAL STYLES
+========================================= */
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    min-width: 320px;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--background);
+    color: var(--foreground);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  button:disabled {
+    cursor: not-allowed;
+  }
+
+  ::selection {
+    background: var(--primary-soft);
+    color: var(--foreground);
+  }
+}
+
+/* =========================================
+   5. ACCESSIBILITY
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
