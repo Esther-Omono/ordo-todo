@@ -1,11 +1,25 @@
-export default function ProjectDetails() {
-  return (
-    <div>
-      <h2 className='text-2xl font-semibold text-foreground'>ProjectDetails</h2>
+import { useParams } from 'react-router-dom';
+import { useTasks } from '../features/tasks/useTasks';
+import { getProjectTasks, sortTasks } from '../features/tasks/taskSelectors';
+import TaskListView from '../features/tasks/components/TaskListView';
 
-      <p className='mt-2 text-muted-foreground'>
-        Your ProjectDetails will appear here.
-      </p>
-    </div>
+export default function ProjectDetails() {
+  const { projectId } = useParams();
+  const { tasks } = useTasks();
+
+  const projectTasks = sortTasks(
+    getProjectTasks(tasks, projectId),
+    'createdAt',
+    'desc',
+  );
+
+  return (
+    <TaskListView
+      title='Project Tasks'
+      description='Tasks associated with this project.'
+      tasks={projectTasks}
+      emptyTitle='No tasks in this project'
+      emptyDescription='Tasks assigned to this project will appear here.'
+    />
   );
 }

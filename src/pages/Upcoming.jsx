@@ -1,11 +1,19 @@
-export default function Upcoming() {
-  return (
-    <div>
-      <h2 className='text-2xl font-semibold text-foreground'>Upcoming</h2>
+import { useTasks } from '../features/tasks/useTasks';
+import { getUpcomingTasks, sortTasks } from '../features/tasks/taskSelectors';
+import TaskListView from '../features/tasks/components/TaskListView';
 
-      <p className='mt-2 text-muted-foreground'>
-        Your Upcoming tasks will appear here.
-      </p>
-    </div>
+export default function Upcoming() {
+  const { tasks } = useTasks();
+
+  const upcomingTasks = sortTasks(getUpcomingTasks(tasks), 'dueDate', 'asc');
+
+  return (
+    <TaskListView
+      title='Upcoming'
+      description="See what's coming up next."
+      tasks={upcomingTasks}
+      emptyTitle='Nothing coming up'
+      emptyDescription="You don't have any upcoming tasks. Add one whenever you're ready."
+    />
   );
 }

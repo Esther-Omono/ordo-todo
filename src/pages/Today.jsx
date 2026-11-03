@@ -1,11 +1,19 @@
-export default function Today() {
-  return (
-    <div>
-      <h2 className='text-2xl font-semibold text-foreground'>Today</h2>
+import { useTasks } from '../features/tasks/useTasks';
+import { getTodayTasks, sortTasks } from '../features/tasks/taskSelectors';
+import TaskListView from '../features/tasks/components/TaskListView';
 
-      <p className='mt-2 text-muted-foreground'>
-        Your tasks for today will appear here.
-      </p>
-    </div>
+export default function Today() {
+  const { tasks } = useTasks();
+
+  const todayTasks = sortTasks(getTodayTasks(tasks), 'dueDate', 'asc');
+
+  return (
+    <TaskListView
+      title='Today'
+      description='Focus on what needs your attention.'
+      tasks={todayTasks}
+      emptyTitle="You're all caught up!"
+      emptyDescription='No outstanding tasks for today. Enjoy the breathing room.'
+    />
   );
 }

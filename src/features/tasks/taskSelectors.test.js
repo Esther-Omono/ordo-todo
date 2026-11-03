@@ -3,7 +3,13 @@ import {
   getFilteredTasks,
   sortTasks,
   getSubtaskProgress,
+  getTodayTasks,
+  getUpcomingTasks,
+  getCompletedTasks,
+  getProjectTasks,
 } from './taskSelectors';
+
+import { format, addDays, subDays } from 'date-fns';
 
 const tasks = [
   {
@@ -65,5 +71,60 @@ describe('taskSelectors', () => {
       completed: 1,
       percentage: 50,
     });
+  });
+
+  it('includes overdue tasks in Today', () => {
+    const overdueTask = {
+      ...tasks[0],
+      dueDate: format(subDays(new Date(), 1), 'yyyy-MM-dd'),
+      completed: false,
+    };
+
+    const result = getTodayTasks([overdueTask]);
+
+    expect(result).toHaveLength(1);
+  });
+
+  it('includes tasks due today in Today', () => {
+    const todayTask = {
+      ...tasks[0],
+      dueDate: format(new Date(), 'yyyy-MM-dd'),
+      completed: false,
+    };
+
+    const result = getTodayTasks([todayTask]);
+
+    expect(result).toHaveLength(1);
+  });
+
+  it('excludes completed tasks from Today', () => {
+    const completedTask = {
+      ...tasks[0],
+      dueDate: format(new Date(), 'yyyy-MM-dd'),
+      completed: true,
+    };
+
+    expect(getTodayTasks([completedTask])).toHaveLength(0);
+  });
+
+  it('includes future tasks in Upcoming', () => {
+    const futureTask = {
+      ...tasks[0],
+      dueDate: format(addDays(new Date(), 2), 'yyyy-MM-dd'),
+      completed: false,
+    };
+
+    expect(getUpcomingTasks([futureTask])).toHaveLength(1);
+  });
+
+  it('returns only completed tasks', () => {
+    expect(getCompletedTasks(tasks)).toHaveLength(1);
+  });
+
+  it('filters tasks by project ID', () => {
+    const result = getProjectTasks(tasks, 'project-1');
+
+    expect(result).toHaveLength(1);
+    expect(result[0].id).toBe('1');
   });
 });

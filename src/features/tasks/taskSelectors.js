@@ -1,3 +1,5 @@
+import { isToday, isBefore, isAfter, startOfDay, parseISO } from 'date-fns';
+
 const priorityOrder = {
   high: 3,
   medium: 2,
@@ -81,4 +83,38 @@ export function getSubtaskProgress(task) {
     completed,
     percentage: total === 0 ? 0 : Math.round((completed / total) * 100),
   };
+}
+
+export function getTodayTasks(tasks) {
+  const today = startOfDay(new Date());
+
+  return tasks.filter((task) => {
+    if (task.completed || !task.dueDate) return false;
+
+    const dueDate = parseISO(task.dueDate);
+
+    return isToday(dueDate) || isBefore(dueDate, today);
+  });
+}
+
+export function getUpcomingTasks(tasks) {
+  const today = startOfDay(new Date());
+
+  return tasks.filter((task) => {
+    if (task.completed || !task.dueDate) return false;
+
+    return isAfter(parseISO(task.dueDate), today);
+  });
+}
+
+export function getCompletedTasks(tasks) {
+  return tasks.filter((task) => task.completed);
+}
+
+export function getAllTasks(tasks) {
+  return tasks;
+}
+
+export function getProjectTasks(tasks, projectId) {
+  return tasks.filter((task) => task.projectId === projectId);
 }
