@@ -9,10 +9,10 @@ import {
   Trash2,
 } from 'lucide-react';
 
-import { useProjects } from '../useProjects';
-import { useTasks } from '../../tasks/useTasks';
-import { ProjectFormModal } from '../components';
-import TaskListView from '../../tasks/components/TaskListView';
+import { useProjects } from '../features/projects/useProjects';
+import { useTasks } from '../features/tasks/useTasks';
+import ProjectFormModal from '../features/projects/components/ProjectFormModal';
+import TaskListView from '../features/tasks/components/TaskListView';
 
 function ProjectDetails() {
   const { projectId } = useParams();
