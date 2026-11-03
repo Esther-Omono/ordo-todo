@@ -4,11 +4,15 @@ import { useTasks } from '../useTasks';
 import { useProjects } from '../../projects/useProjects';
 import { Plus, X } from 'lucide-react';
 
-const getInitialFormData = (task, defaultProjectId = null) => ({
+const getInitialFormData = (
+  task,
+  defaultProjectId = null,
+  defaultDueDate = '',
+) => ({
   title: task?.title ?? '',
   description: task?.description ?? '',
   projectId: task?.projectId ?? defaultProjectId ?? '',
-  dueDate: task?.dueDate ?? '',
+  dueDate: task?.dueDate ?? defaultDueDate,
   dueTime: task?.dueTime ?? '',
   priority: task?.priority ?? 'medium',
 });
@@ -18,6 +22,7 @@ export default function TaskFormModal({
   onClose,
   task = null,
   defaultProjectId = null,
+  defaultDueDate = '',
 }) {
   const { addTask, updateTask } = useTasks();
   const { projects, addProject } = useProjects();
@@ -32,7 +37,7 @@ export default function TaskFormModal({
   const [projectError, setProjectError] = useState('');
 
   const [formData, setFormData] = useState(() =>
-    getInitialFormData(task, defaultProjectId),
+    getInitialFormData(task, defaultProjectId, defaultDueDate),
   );
   const [error, setError] = useState('');
 

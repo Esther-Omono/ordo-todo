@@ -1,11 +1,19 @@
-import { ChevronLeft, ChevronRight, CalendarDays } from 'lucide-react';
+import { useState } from 'react';
+import { ChevronLeft, ChevronRight, CalendarDays, Plus } from 'lucide-react';
 import { format, startOfWeek, endOfWeek } from 'date-fns';
 
 import { useCalendarNavigation } from '../features/calendar/hooks/useCalendarNavigation';
 import { useTasks } from '../features/tasks/useTasks';
+import { useProjects } from '../features/projects/useProjects';
+
 import CalendarMonthView from '../features/calendar/components/CalendarMonthView';
 import CalendarWeekView from '../features/calendar/components/CalendarWeekView';
 import CalendarDayView from '../features/calendar/components/CalendarDayView';
+
+import { Button } from '../components/ui';
+
+import TaskDetailsDrawer from '../features/tasks/components/TaskDetailsDrawer';
+import TaskFormModal from '../features/tasks/components/TaskFormModal';
 
 const views = ['month', 'week', 'day'];
 
@@ -22,6 +30,16 @@ export default function Calendar() {
   } = useCalendarNavigation();
 
   const { tasks } = useTasks();
+  const { projects } = useProjects();
+
+  const [selectedTaskId, setSelectedTaskId] = useState(null);
+  const [isCreating, setIsCreating] = useState(false);
+
+  const selectedTask = tasks.find((task) => task.id === selectedTaskId) ?? null;
+
+  function handleOpenTask(task) {
+    setSelectedTaskId(task.id);
+  }
 
   function getDateLabel() {
     if (view === 'month') {
@@ -88,6 +106,10 @@ export default function Calendar() {
               <ChevronRight size={18} />
             </button>
           </div>
+          <Button onClick={() => setIsCreating(true)}>
+            <Plus size={17} />
+            <span>Add task</span>
+          </Button>
         </div>
       </header>
 
@@ -122,6 +144,7 @@ export default function Calendar() {
             selectedDate={selectedDate}
             onSelectDate={selectDate}
             tasks={tasks}
+            onOpenTask={handleOpenTask}
           />
         )}
 
@@ -131,6 +154,7 @@ export default function Calendar() {
             selectedDate={selectedDate}
             tasks={tasks}
             onSelectDate={selectDate}
+            onOpenTask={handleOpenTask}
           />
         )}
 
@@ -140,9 +164,24 @@ export default function Calendar() {
             selectedDate={selectedDate}
             tasks={tasks}
             onSelectDate={selectDate}
+            onOpenTask={handleOpenTask}
           />
         )}
       </section>
+
+      {isCreating && (
+        <TaskFormModal
+          isOpen={isCreating}
+          onClose={() => setIsCreating(false)}
+          defaultDueDate={format(currentDate, 'yyyy-MM-dd')}
+        />
+      )}
+
+      <TaskDetailsDrawer
+        task={selectedTask}
+        onClose={() => setSelectedTaskId(null)}
+        projects={projects}
+      />
     </div>
   );
 }
