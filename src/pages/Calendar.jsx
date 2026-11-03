@@ -2,12 +2,24 @@ import { ChevronLeft, ChevronRight, CalendarDays } from 'lucide-react';
 import { format, startOfWeek, endOfWeek } from 'date-fns';
 
 import { useCalendarNavigation } from '../features/calendar/hooks/useCalendarNavigation';
+import { useTasks } from '../features/tasks/useTasks';
+import CalendarMonthView from '../features/calendar/components/CalendarMonthView';
 
 const views = ['month', 'week', 'day'];
 
 export default function Calendar() {
-  const { currentDate, view, goToToday, goToPrevious, goToNext, changeView } =
-    useCalendarNavigation();
+  const {
+    currentDate,
+    selectedDate,
+    view,
+    goToToday,
+    goToPrevious,
+    goToNext,
+    changeView,
+    selectDate,
+  } = useCalendarNavigation();
+
+  const { tasks } = useTasks();
 
   function getDateLabel() {
     if (view === 'month') {
@@ -102,20 +114,22 @@ export default function Calendar() {
       </section>
 
       <section className='flex min-h-96 items-center justify-center rounded-xl border border-border bg-surface'>
-        <div className='text-center'>
-          <CalendarDays
-            size={36}
-            className='mx-auto mb-3 text-muted-foreground'
+        {view === 'month' && (
+          <CalendarMonthView
+            currentDate={currentDate}
+            selectedDate={selectedDate}
+            onSelectDate={selectDate}
+            tasks={tasks}
           />
+        )}
 
-          <h3 className='font-medium text-foreground'>
-            Your calendar is taking shape
-          </h3>
-
-          <p className='mt-1 text-sm text-muted-foreground'>
-            Calendar views will appear here.
-          </p>
-        </div>
+        {view !== 'month' && (
+          <section className='flex min-h-96 items-center justify-center rounded-xl border border-border bg-surface'>
+            <p className='text-sm text-muted-foreground'>
+              This calendar view is coming in a later batch.
+            </p>
+          </section>
+        )}
       </section>
     </div>
   );
