@@ -78,7 +78,7 @@ function TaskDetailsDrawer({ task, onClose, projects = [] }) {
           border-l border-border
           bg-background text-foreground
           shadow-xl
-          sm:max-w-[480px]
+          sm:max-w-120
         '
         onClick={(event) => event.stopPropagation()}
       >

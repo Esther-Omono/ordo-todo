@@ -11,6 +11,7 @@ export default function TaskListView({
   title,
   description,
   tasks,
+  defaultProjectId = null,
   emptyTitle = 'No tasks yet',
   emptyDescription = 'Your tasks will appear here.',
 }) {
@@ -93,6 +94,7 @@ export default function TaskListView({
         <TaskFormModal
           isOpen={isCreating}
           onClose={() => setIsCreating(false)}
+          defaultProjectId={defaultProjectId}
         />
       )}
 
@@ -100,6 +102,7 @@ export default function TaskListView({
       <TaskDetailsDrawer
         task={selectedTask}
         onClose={() => setSelectedTaskId(null)}
+        defaultProjectId={defaultProjectId}
       />
     </>
   );

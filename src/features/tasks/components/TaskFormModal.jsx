@@ -2,10 +2,10 @@ import { useState } from 'react';
 import { Button, Input, Modal } from '../../../components/ui';
 import { useTasks } from '../useTasks';
 
-const getInitialFormData = (task) => ({
+const getInitialFormData = (task, defaultProjectId) => ({
   title: task?.title ?? '',
   description: task?.description ?? '',
-  projectId: task?.projectId ?? '',
+  projectId: task?.projectId ?? defaultProjectId ?? '',
   dueDate: task?.dueDate ?? '',
   dueTime: task?.dueTime ?? '',
   priority: task?.priority ?? 'medium',
@@ -16,10 +16,13 @@ export default function TaskFormModal({
   onClose,
   task = null,
   projects = [],
+  defaultProjectId = null,
 }) {
   const { addTask, updateTask } = useTasks();
 
-  const [formData, setFormData] = useState(() => getInitialFormData(task));
+  const [formData, setFormData] = useState(() =>
+    getInitialFormData(task, defaultProjectId),
+  );
   const [error, setError] = useState('');
 
   const isEditing = Boolean(task);
