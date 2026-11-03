@@ -4,6 +4,7 @@ import { format, startOfWeek, endOfWeek } from 'date-fns';
 import { useCalendarNavigation } from '../features/calendar/hooks/useCalendarNavigation';
 import { useTasks } from '../features/tasks/useTasks';
 import CalendarMonthView from '../features/calendar/components/CalendarMonthView';
+import CalendarWeekView from '../features/calendar/components/CalendarWeekView';
 
 const views = ['month', 'week', 'day'];
 
@@ -123,7 +124,16 @@ export default function Calendar() {
           />
         )}
 
-        {view !== 'month' && (
+        {view === 'week' && (
+          <CalendarWeekView
+            currentDate={currentDate}
+            selectedDate={selectedDate}
+            tasks={tasks}
+            onSelectDate={selectDate}
+          />
+        )}
+
+        {view === 'day' && (
           <section className='flex min-h-96 items-center justify-center rounded-xl border border-border bg-surface'>
             <p className='text-sm text-muted-foreground'>
               This calendar view is coming in a later batch.
