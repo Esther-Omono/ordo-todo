@@ -5,6 +5,7 @@ import { useCalendarNavigation } from '../features/calendar/hooks/useCalendarNav
 import { useTasks } from '../features/tasks/useTasks';
 import CalendarMonthView from '../features/calendar/components/CalendarMonthView';
 import CalendarWeekView from '../features/calendar/components/CalendarWeekView';
+import CalendarDayView from '../features/calendar/components/CalendarDayView';
 
 const views = ['month', 'week', 'day'];
 
@@ -134,11 +135,12 @@ export default function Calendar() {
         )}
 
         {view === 'day' && (
-          <section className='flex min-h-96 items-center justify-center rounded-xl border border-border bg-surface'>
-            <p className='text-sm text-muted-foreground'>
-              This calendar view is coming in a later batch.
-            </p>
-          </section>
+          <CalendarDayView
+            currentDate={currentDate}
+            selectedDate={selectedDate}
+            tasks={tasks}
+            onSelectDate={selectDate}
+          />
         )}
       </section>
     </div>
