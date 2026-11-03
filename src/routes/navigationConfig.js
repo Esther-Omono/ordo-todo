@@ -5,6 +5,7 @@ import {
   CheckCircle2,
   FolderKanban,
   Settings,
+  Calendar,
 } from 'lucide-react';
 
 export const mainNavigation = [
@@ -32,6 +33,11 @@ export const mainNavigation = [
     label: 'Projects',
     path: '/projects',
     icon: FolderKanban,
+  },
+  {
+    label: 'Calendar',
+    path: '/calendar',
+    icon: Calendar,
   },
 ];
 
