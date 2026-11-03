@@ -80,4 +80,79 @@ describe('taskReducer', () => {
     expect(result[0].subtasks).toHaveLength(1);
     expect(result[0].subtasks[0].title).toBe('Write reducer tests');
   });
+
+  it('toggles subtask completion', () => {
+    const taskWithSubtask = {
+      ...sampleTask,
+      subtasks: [
+        {
+          id: 'subtask-1',
+          title: 'Write tests',
+          completed: false,
+          completedAt: null,
+          createdAt: '2026-11-03T10:00:00.000Z',
+        },
+      ],
+    };
+
+    const result = taskReducer([taskWithSubtask], {
+      type: 'TOGGLE_SUBTASK_COMPLETION',
+      payload: {
+        taskId: 'task-1',
+        subtaskId: 'subtask-1',
+      },
+    });
+
+    expect(result[0].subtasks[0].completed).toBe(true);
+    expect(result[0].subtasks[0].completedAt).toBeTruthy();
+  });
+
+  it('updates a subtask title', () => {
+    const taskWithSubtask = {
+      ...sampleTask,
+      subtasks: [
+        {
+          id: 'subtask-1',
+          title: 'Old title',
+          completed: false,
+          completedAt: null,
+          createdAt: '2026-11-03T10:00:00.000Z',
+        },
+      ],
+    };
+
+    const result = taskReducer([taskWithSubtask], {
+      type: 'UPDATE_SUBTASK',
+      payload: {
+        taskId: 'task-1',
+        subtaskId: 'subtask-1',
+        updates: { title: 'New title' },
+      },
+    });
+
+    expect(result[0].subtasks[0].title).toBe('New title');
+  });
+
+  it('deletes a subtask', () => {
+    const taskWithSubtask = {
+      ...sampleTask,
+      subtasks: [
+        {
+          id: 'subtask-1',
+          title: 'Write tests',
+          completed: false,
+        },
+      ],
+    };
+
+    const result = taskReducer([taskWithSubtask], {
+      type: 'DELETE_SUBTASK',
+      payload: {
+        taskId: 'task-1',
+        subtaskId: 'subtask-1',
+      },
+    });
+
+    expect(result[0].subtasks).toHaveLength(0);
+  });
 });
