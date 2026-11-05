@@ -15,6 +15,8 @@ import { Button } from '../components/ui';
 import TaskDetailsDrawer from '../features/tasks/components/TaskDetailsDrawer';
 import TaskFormModal from '../features/tasks/components/TaskFormModal';
 
+import { usePreferences } from '../features/preferences/usePreferences';
+
 const views = ['month', 'week', 'day'];
 
 export default function Calendar() {
@@ -37,6 +39,9 @@ export default function Calendar() {
 
   const selectedTask = tasks.find((task) => task.id === selectedTaskId) ?? null;
 
+  const { preferences } = usePreferences();
+  const weekStartsOn = preferences.weekStartsOn;
+
   function handleOpenTask(task) {
     setSelectedTaskId(task.id);
   }
@@ -48,11 +53,11 @@ export default function Calendar() {
 
     if (view === 'week') {
       const start = startOfWeek(currentDate, {
-        weekStartsOn: 1,
+        weekStartsOn,
       });
 
       const end = endOfWeek(currentDate, {
-        weekStartsOn: 1,
+        weekStartsOn,
       });
 
       return `${format(start, 'MMM d')} – ${format(end, 'MMM d, yyyy')}`;

@@ -2,19 +2,21 @@ import { useState } from 'react';
 import { Button, Input, Modal } from '../../../components/ui';
 import { useTasks } from '../useTasks';
 import { useProjects } from '../../projects/useProjects';
+import { usePreferences } from '../../preferences/usePreferences';
 import { Plus, X } from 'lucide-react';
 
 const getInitialFormData = (
   task,
   defaultProjectId = null,
   defaultDueDate = '',
+  defaultPriority = 'medium',
 ) => ({
   title: task?.title ?? '',
   description: task?.description ?? '',
   projectId: task?.projectId ?? defaultProjectId ?? '',
   dueDate: task?.dueDate ?? defaultDueDate,
   dueTime: task?.dueTime ?? '',
-  priority: task?.priority ?? 'medium',
+  priority: task?.priority ?? defaultPriority,
 });
 
 export default function TaskFormModal({
@@ -27,6 +29,7 @@ export default function TaskFormModal({
   const { addTask, updateTask } = useTasks();
   const { projects, addProject } = useProjects();
   const [isCreatingProject, setIsCreatingProject] = useState(false);
+  const { preferences } = usePreferences();
 
   const [newProject, setNewProject] = useState({
     name: '',
@@ -37,7 +40,12 @@ export default function TaskFormModal({
   const [projectError, setProjectError] = useState('');
 
   const [formData, setFormData] = useState(() =>
-    getInitialFormData(task, defaultProjectId, defaultDueDate),
+    getInitialFormData(
+      task,
+      defaultProjectId,
+      defaultDueDate,
+      preferences.defaultPriority,
+    ),
   );
   const [error, setError] = useState('');
 
