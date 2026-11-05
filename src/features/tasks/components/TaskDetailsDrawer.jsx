@@ -7,12 +7,18 @@ import {
   Trash2,
   X,
 } from 'lucide-react';
-import { format, parseISO } from 'date-fns';
 
 import { Badge, Button, Checkbox } from '../../../components/ui';
 import { useTasks } from '../useTasks';
 import SubtaskManager from './SubtaskManager';
 import TaskFormModal from './TaskFormModal';
+
+import { usePreferences } from '../../preferences/usePreferences';
+
+import {
+  formatPreferenceDate,
+  formatPreferenceDateTime,
+} from '../../preferences/dateFormatting';
 
 const priorityVariants = {
   low: 'info',
@@ -24,6 +30,8 @@ function TaskDetailsDrawer({ task, onClose, projects = [] }) {
   const { toggleTaskCompletion, deleteTask } = useTasks();
 
   const [isEditing, setIsEditing] = useState(false);
+
+  const { preferences } = usePreferences();
 
   useEffect(() => {
     if (!task) return;
@@ -46,7 +54,7 @@ function TaskDetailsDrawer({ task, onClose, projects = [] }) {
   const project = projects.find((item) => item.id === task.projectId);
 
   const formattedDate = task.dueDate
-    ? format(parseISO(task.dueDate), 'EEEE, d MMMM yyyy')
+    ? formatPreferenceDate(task.dueDate, preferences.dateFormat)
     : null;
 
   const handleDelete = () => {
@@ -178,12 +186,13 @@ function TaskDetailsDrawer({ task, onClose, projects = [] }) {
           {/* Task timestamps */}
           <section className='space-y-2 border-t border-border pt-5'>
             <p className='text-xs text-muted-foreground'>
-              Created: {format(parseISO(task.createdAt), 'd MMM yyyy, HH:mm')}
+              Created:{' '}
+              {formatPreferenceDateTime(task.createdAt, preferences.dateFormat)}
             </p>
 
             <p className='text-xs text-muted-foreground'>
               Last updated:{' '}
-              {format(parseISO(task.updatedAt), 'd MMM yyyy, HH:mm')}
+              {formatPreferenceDateTime(task.updatedAt, preferences.dateFormat)}
             </p>
           </section>
         </div>

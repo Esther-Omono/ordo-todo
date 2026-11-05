@@ -1,4 +1,3 @@
-import { format, parseISO } from 'date-fns';
 import { useState } from 'react';
 import {
   CalendarDays,
@@ -12,6 +11,9 @@ import { Badge, Checkbox, Dropdown } from '../../../components/ui';
 import { useTasks } from '../useTasks';
 import TaskFormModal from './TaskFormModal';
 
+import { usePreferences } from '../../preferences/usePreferences';
+import { formatPreferenceDate } from '../../preferences/dateFormatting';
+
 const priorityVariants = {
   low: 'info',
   medium: 'warning',
@@ -22,6 +24,7 @@ export default function TaskRow({ task, onOpenDetails, projects = [] }) {
   const { toggleTaskCompletion, deleteTask } = useTasks();
 
   const [isEditing, setIsEditing] = useState(false);
+  const { preferences } = usePreferences();
 
   function handleDelete() {
     const confirmed = window.confirm(
@@ -34,7 +37,7 @@ export default function TaskRow({ task, onOpenDetails, projects = [] }) {
   }
 
   const formattedDate = task.dueDate
-    ? format(parseISO(task.dueDate), 'd MMM')
+    ? formatPreferenceDate(task.dueDate, preferences.dateFormat)
     : null;
 
   return (

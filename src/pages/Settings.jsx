@@ -12,6 +12,9 @@ import { Button } from '../components/ui';
 import { exportBackup } from '../features/preferences/dataBackup';
 import DataRestore from '../features/preferences/components/DataRestore';
 
+import { Info } from 'lucide-react';
+import AboutSection from '../features/preferences/components/AboutSection';
+
 const sectionClass = 'rounded-xl border border-border bg-surface p-5 sm:p-6';
 
 const labelClass = 'text-sm font-medium text-foreground';
@@ -180,6 +183,14 @@ export default function Settings() {
             <DataRestore />
           </div>
         </div>
+      </SettingsSection>
+
+      <SettingsSection
+        icon={Info}
+        title='About Ordo'
+        description='Learn more about this application.'
+      >
+        <AboutSection />
       </SettingsSection>
     </div>
   );

@@ -16,6 +16,7 @@ import TaskDetailsDrawer from '../features/tasks/components/TaskDetailsDrawer';
 import TaskFormModal from '../features/tasks/components/TaskFormModal';
 
 import { usePreferences } from '../features/preferences/usePreferences';
+import { formatPreferenceDate } from '../features/preferences/dateFormatting';
 
 const views = ['month', 'week', 'day'];
 
@@ -60,10 +61,10 @@ export default function Calendar() {
         weekStartsOn,
       });
 
-      return `${format(start, 'MMM d')} – ${format(end, 'MMM d, yyyy')}`;
+      return `${formatPreferenceDate(start, preferences.dateFormat)} – ${formatPreferenceDate(end, preferences.dateFormat)}`;
     }
 
-    return format(currentDate, 'EEEE, MMMM d, yyyy');
+    return `${format(currentDate, 'EEEE')}, ${formatPreferenceDate(currentDate, preferences.dateFormat)}`;
   }
 
   return (
