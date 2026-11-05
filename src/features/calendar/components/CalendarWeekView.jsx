@@ -1,6 +1,8 @@
 import { format, isSameDay, isToday } from 'date-fns';
 
 import { getWeekDays, getTasksForDate } from '../utils/calendarUtils';
+import { usePreferences } from '../../preferences/usePreferences';
+import { formatPreferenceDate } from '../../preferences/dateFormatting';
 
 const priorityStyles = {
   high: 'bg-danger',
@@ -26,10 +28,11 @@ export default function CalendarWeekView({
   onOpenTask,
 }) {
   const days = getWeekDays(currentDate);
+  const { preferences } = usePreferences();
 
   return (
     <div className='overflow-x-auto rounded-xl border border-border bg-surface'>
-      <div className='grid min-w-[840px] grid-cols-7'>
+      <div className='grid min-w-210 grid-cols-7'>
         {days.map((day) => {
           const dayTasks = sortTasks(getTasksForDate(tasks, day));
 
@@ -39,13 +42,13 @@ export default function CalendarWeekView({
           return (
             <div
               key={format(day, 'yyyy-MM-dd')}
-              className='min-h-[420px] border-r border-border last:border-r-0'
+              className='min-h-105 border-r border-border last:border-r-0'
             >
               {/* Day heading */}
               <button
                 type='button'
                 onClick={() => onSelectDate(day)}
-                aria-label={format(day, 'EEEE, MMMM d, yyyy')}
+                aria-label={`${format(day, 'EEEE')}, ${formatPreferenceDate(day, preferences.dateFormat)}`}
                 aria-pressed={selected}
                 className={`
                   flex w-full flex-col items-center gap-1
@@ -117,7 +120,7 @@ export default function CalendarWeekView({
 
                       <p
                         className={`
-                          mt-1.5 break-words text-xs font-medium
+                          mt-1.5 wrap-break-word text-xs font-medium
                           text-foreground
                           ${
                             task.completed

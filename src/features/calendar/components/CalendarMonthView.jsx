@@ -1,5 +1,6 @@
 import { getMonthDays, getTasksForDate } from '../utils/calendarUtils';
 import CalendarDayCell from './CalendarDayCell';
+import { usePreferences } from '../../preferences/usePreferences';
 
 const weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
@@ -11,6 +12,7 @@ export default function CalendarMonthView({
   onOpenTask,
 }) {
   const days = getMonthDays(currentDate);
+  const { preferences } = usePreferences();
 
   return (
     <div className='overflow-hidden rounded-xl border border-border bg-surface'>
@@ -33,6 +35,7 @@ export default function CalendarMonthView({
             currentDate={currentDate}
             selectedDate={selectedDate}
             tasks={getTasksForDate(tasks, day)}
+            dateFormat={preferences.dateFormat}
             onSelectDate={onSelectDate}
             onOpenTask={onOpenTask}
           />

@@ -3,6 +3,9 @@ import { format, isToday } from 'date-fns';
 import { getTasksForDate } from '../utils/calendarUtils';
 import { CalendarDays, Clock3, CircleCheck, ListTodo } from 'lucide-react';
 
+import { usePreferences } from '../../preferences/usePreferences';
+import { formatPreferenceDate } from '../../preferences/dateFormatting';
+
 function sortTasks(tasks) {
   return [...tasks].sort((a, b) => {
     if (!a.dueTime && !b.dueTime) return 0;
@@ -105,6 +108,8 @@ export default function CalendarDayView({
 
   const today = isToday(date);
 
+  const { preferences } = usePreferences();
+
   return (
     <div className='space-y-6'>
       {/* Daily heading */}
@@ -120,7 +125,8 @@ export default function CalendarDayView({
             </div>
 
             <h2 className='mt-2 text-xl font-semibold text-foreground'>
-              {format(date, 'EEEE, MMMM d')}
+              {format(date, 'EEEE')},{' '}
+              {formatPreferenceDate(date, preferences.dateFormat)}
             </h2>
 
             <p className='mt-1 text-sm text-muted-foreground'>

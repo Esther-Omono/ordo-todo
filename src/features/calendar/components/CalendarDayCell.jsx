@@ -1,10 +1,12 @@
 import { format, isSameDay, isSameMonth, isToday } from 'date-fns';
+import { formatPreferenceDate } from '../../preferences/dateFormatting';
 
 export default function CalendarDayCell({
   date,
   currentDate,
   selectedDate,
   tasks = [],
+  dateFormat,
   onSelectDate,
   onOpenTask,
 }) {
@@ -34,7 +36,7 @@ export default function CalendarDayCell({
       <button
         type='button'
         onClick={() => onSelectDate(date)}
-        aria-label={format(date, 'EEEE, MMMM d, yyyy')}
+        aria-label={`${format(date, 'EEEE')}, ${formatPreferenceDate(date, dateFormat)}`}
         aria-pressed={isSelected}
         className='mb-1 flex w-fit items-center justify-center'
       >
