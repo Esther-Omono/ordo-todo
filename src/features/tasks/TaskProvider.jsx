@@ -84,6 +84,13 @@ export function TaskProvider({ children }) {
     });
   }
 
+  function replaceTasks(tasks) {
+    dispatch({
+      type: 'LOAD_TASKS',
+      payload: tasks,
+    });
+  }
+
   const value = {
     tasks,
     addTask,
@@ -94,6 +101,7 @@ export function TaskProvider({ children }) {
     updateSubtask,
     deleteSubtask,
     toggleSubtaskCompletion,
+    replaceTasks,
   };
 
   return <TaskContext.Provider value={value}>{children}</TaskContext.Provider>;

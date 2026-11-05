@@ -63,11 +63,19 @@ export function ProjectProvider({ children }) {
     });
   }
 
+  function replaceProjects(projects) {
+    dispatch({
+      type: 'LOAD_PROJECTS',
+      payload: projects,
+    });
+  }
+
   const value = {
     projects,
     addProject,
     updateProject,
     deleteProject,
+    replaceProjects,
   };
 
   return (

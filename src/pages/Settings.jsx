@@ -10,6 +10,7 @@ import { usePreferences } from '../features/preferences/usePreferences';
 
 import { Button } from '../components/ui';
 import { exportBackup } from '../features/preferences/dataBackup';
+import DataRestore from '../features/preferences/components/DataRestore';
 
 const sectionClass = 'rounded-xl border border-border bg-surface p-5 sm:p-6';
 
@@ -158,20 +159,26 @@ export default function Settings() {
         title='Data management'
         description='Back up and restore your Ordo data.'
       >
-        <div className='flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between'>
-          <div>
-            <p className='text-sm font-medium text-foreground'>
-              Export your data
-            </p>
-            <p className='mt-1 text-xs text-muted-foreground'>
-              Download a JSON backup of your tasks, projects and preferences.
-            </p>
+        <div className='space-y-6'>
+          <div className='flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between'>
+            <div>
+              <p className='text-sm font-medium text-foreground'>
+                Export your data
+              </p>
+              <p className='mt-1 text-xs text-muted-foreground'>
+                Download a JSON backup of your tasks, projects and preferences.
+              </p>
+            </div>
+
+            <Button onClick={exportBackup} variant='secondary'>
+              <Download size={16} />
+              Export data
+            </Button>
           </div>
 
-          <Button onClick={exportBackup} variant='secondary'>
-            <Download size={16} />
-            Export data
-          </Button>
+          <div className='border-t border-border pt-5'>
+            <DataRestore />
+          </div>
         </div>
       </SettingsSection>
     </div>

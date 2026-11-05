@@ -48,6 +48,13 @@ export function PreferencesProvider({ children }) {
     });
   };
 
+  const loadPreferences = (preferences) => {
+    dispatch({
+      type: 'LOAD_PREFERENCES',
+      payload: preferences,
+    });
+  };
+
   const toggleTheme = () => {
     setTheme(preferences.theme === 'light' ? 'dark' : 'light');
   };
@@ -59,6 +66,7 @@ export function PreferencesProvider({ children }) {
         setTheme,
         toggleTheme,
         updatePreference,
+        loadPreferences,
       }}
     >
       {children}

@@ -56,6 +56,13 @@ export function validateBackup(backup) {
     };
   }
 
+  if (
+    typeof backup.exportedAt !== 'string' ||
+    Number.isNaN(Date.parse(backup.exportedAt))
+  ) {
+    errors.push('Invalid backup export date.');
+  }
+
   if (backup.app !== 'Ordo') {
     errors.push('This file is not an Ordo backup.');
   }
