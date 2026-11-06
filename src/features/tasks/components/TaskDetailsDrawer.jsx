@@ -15,6 +15,10 @@ import TaskFormModal from './TaskFormModal';
 
 import { usePreferences } from '../../preferences/usePreferences';
 
+import { Tag } from 'lucide-react';
+import { useLabels } from '../../labels/useLabels';
+import TaskLabels from '../../labels/components/TaskLabels';
+
 import {
   formatPreferenceDate,
   formatPreferenceDateTime,
@@ -32,6 +36,7 @@ function TaskDetailsDrawer({ task, onClose, projects = [] }) {
   const [isEditing, setIsEditing] = useState(false);
 
   const { preferences } = usePreferences();
+  const { labels } = useLabels();
 
   useEffect(() => {
     if (!task) return;
@@ -160,6 +165,20 @@ function TaskDetailsDrawer({ task, onClose, projects = [] }) {
                 <span className='text-sm'>
                   {project?.name || 'No project assigned'}
                 </span>
+              </div>
+
+              <div className='flex items-start gap-3'>
+                <Tag size={18} className='mt-0.5 text-muted-foreground' />
+
+                <div className='min-w-0 flex-1 space-y-2'>
+                  <span className='text-sm text-muted-foreground'>Labels</span>
+
+                  <TaskLabels
+                    labelIds={task.labelIds ?? []}
+                    labels={labels}
+                    showEmpty
+                  />
+                </div>
               </div>
 
               <div className='flex items-center gap-3'>

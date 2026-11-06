@@ -13,6 +13,8 @@ import TaskFormModal from './TaskFormModal';
 
 import { usePreferences } from '../../preferences/usePreferences';
 import { formatPreferenceDate } from '../../preferences/dateFormatting';
+import { useLabels } from '../../labels/useLabels';
+import TaskLabels from '../../labels/components/TaskLabels';
 
 const priorityVariants = {
   low: 'info',
@@ -25,6 +27,7 @@ export default function TaskRow({ task, onOpenDetails, projects = [] }) {
 
   const [isEditing, setIsEditing] = useState(false);
   const { preferences } = usePreferences();
+  const { labels } = useLabels();
 
   function handleDelete() {
     const confirmed = window.confirm(
@@ -79,6 +82,8 @@ export default function TaskRow({ task, onOpenDetails, projects = [] }) {
             </span>
           )}
         </button>
+
+        <TaskLabels labelIds={task.labelIds ?? []} labels={labels} />
 
         <div className='flex shrink-0 items-center gap-2 sm:gap-3'>
           <Badge variant={priorityVariants[task.priority] || 'default'}>

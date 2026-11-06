@@ -29,6 +29,9 @@ export function createTask(fields = {}) {
     dueDate: fields.dueDate ?? null,
     dueTime: fields.dueTime ?? null,
     projectId: fields.projectId ?? null,
+    labelIds: Array.isArray(fields.labelIds)
+      ? [...new Set(fields.labelIds)]
+      : [],
     completed: false,
     completedAt: null,
     subtasks: [],

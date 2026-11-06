@@ -3,6 +3,7 @@ import { Button, Input, Modal } from '../../../components/ui';
 import { useTasks } from '../useTasks';
 import { useProjects } from '../../projects/useProjects';
 import { usePreferences } from '../../preferences/usePreferences';
+import { useLabels } from '../../labels/useLabels';
 import { Plus, X } from 'lucide-react';
 
 const getInitialFormData = (
@@ -14,6 +15,7 @@ const getInitialFormData = (
   title: task?.title ?? '',
   description: task?.description ?? '',
   projectId: task?.projectId ?? defaultProjectId ?? '',
+  labelIds: task?.labelIds ?? [],
   dueDate: task?.dueDate ?? defaultDueDate,
   dueTime: task?.dueTime ?? '',
   priority: task?.priority ?? defaultPriority,
@@ -30,6 +32,7 @@ export default function TaskFormModal({
   const { projects, addProject } = useProjects();
   const [isCreatingProject, setIsCreatingProject] = useState(false);
   const { preferences } = usePreferences();
+  const { labels } = useLabels();
 
   const [newProject, setNewProject] = useState({
     name: '',
@@ -102,6 +105,21 @@ export default function TaskFormModal({
     if (error) setError('');
   }
 
+  function handleLabelToggle(labelId) {
+    setFormData((previous) => {
+      const currentLabelIds = previous.labelIds ?? [];
+
+      const labelIds = currentLabelIds.includes(labelId)
+        ? currentLabelIds.filter((id) => id !== labelId)
+        : [...currentLabelIds, labelId];
+
+      return {
+        ...previous,
+        labelIds,
+      };
+    });
+  }
+
   function handleSubmit(event) {
     event.preventDefault();
 
@@ -117,6 +135,7 @@ export default function TaskFormModal({
       title,
       description: formData.description.trim(),
       projectId: formData.projectId || null,
+      labelIds: [...new Set(formData.labelIds ?? [])],
       dueDate: formData.dueDate || null,
       dueTime: formData.dueTime || null,
     };
@@ -377,6 +396,61 @@ export default function TaskFormModal({
             </div>
           )}
         </div>
+
+        {/* Labels */}
+        <fieldset className='space-y-2'>
+          <legend className='text-sm font-medium text-foreground'>
+            Labels
+            <span className='ml-1 font-normal text-muted-foreground'>
+              (Optional)
+            </span>
+          </legend>
+
+          {labels.length > 0 ? (
+            <div className='flex flex-wrap gap-2'>
+              {labels.map((label) => {
+                const isSelected = (formData.labelIds ?? []).includes(label.id);
+
+                return (
+                  <button
+                    key={label.id}
+                    type='button'
+                    onClick={() => handleLabelToggle(label.id)}
+                    aria-pressed={isSelected}
+                    className={`
+              rounded-full border px-3 py-1.5 text-xs font-medium
+              transition-all
+              ${
+                isSelected
+                  ? 'ring-2 ring-primary/30 ring-offset-1'
+                  : 'opacity-70 hover:opacity-100'
+              }
+            `}
+                    style={{
+                      backgroundColor: `${label.color}20`,
+                      borderColor: label.color,
+                      color: label.color,
+                    }}
+                  >
+                    {label.name}
+                    {isSelected && ' ✓'}
+                  </button>
+                );
+              })}
+            </div>
+          ) : (
+            <p className='text-xs text-muted-foreground'>
+              No labels available. Create labels from the Labels page.
+            </p>
+          )}
+
+          {(formData.labelIds ?? []).length > 0 && (
+            <p className='text-xs text-muted-foreground'>
+              {formData.labelIds.length}{' '}
+              {formData.labelIds.length === 1 ? 'label' : 'labels'} selected
+            </p>
+          )}
+        </fieldset>
 
         <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
           <Input
