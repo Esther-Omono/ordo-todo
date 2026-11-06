@@ -4,15 +4,18 @@ import './index.css';
 import App from './App.jsx';
 import { PreferencesProvider } from './features/preferences/PreferencesContext.jsx';
 import { TaskProvider } from './features/tasks/TaskProvider.jsx';
+import { LabelProvider } from './features/labels/LabelProvider.jsx';
 import { ProjectProvider } from './features/projects/ProjectProvider.jsx';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <PreferencesProvider>
       <TaskProvider>
-        <ProjectProvider>
-          <App />
-        </ProjectProvider>
+        <LabelProvider>
+          <ProjectProvider>
+            <App />
+          </ProjectProvider>
+        </LabelProvider>
       </TaskProvider>
     </PreferencesProvider>
   </StrictMode>,
