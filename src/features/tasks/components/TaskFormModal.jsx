@@ -6,6 +6,19 @@ import { usePreferences } from '../../preferences/usePreferences';
 import { useLabels } from '../../labels/useLabels';
 import { Plus, X } from 'lucide-react';
 
+const LABEL_COLORS = [
+  '#BE123C',
+  '#9D174D',
+  '#A21CAF',
+  '#7C2D12',
+  '#B45309',
+  '#4D7C0F',
+  '#166534',
+  '#115E59',
+  '#155E75',
+  '#334155',
+];
+
 const getInitialFormData = (
   task,
   defaultProjectId = null,
@@ -32,7 +45,16 @@ export default function TaskFormModal({
   const { projects, addProject } = useProjects();
   const [isCreatingProject, setIsCreatingProject] = useState(false);
   const { preferences } = usePreferences();
-  const { labels } = useLabels();
+  const { labels, addLabel } = useLabels();
+
+  const [isCreatingLabel, setIsCreatingLabel] = useState(false);
+
+  const [newLabel, setNewLabel] = useState({
+    name: '',
+    color: LABEL_COLORS[0],
+  });
+
+  const [labelError, setLabelError] = useState('');
 
   const [newProject, setNewProject] = useState({
     name: '',
@@ -92,6 +114,55 @@ export default function TaskFormModal({
 
     setProjectError('');
     setIsCreatingProject(false);
+  }
+
+  function handleNewLabelChange(event) {
+    const { name, value } = event.target;
+
+    setNewLabel((previous) => ({
+      ...previous,
+      [name]: value,
+    }));
+
+    if (labelError) setLabelError('');
+  }
+
+  function handleCreateLabel() {
+    const name = newLabel.name.trim();
+
+    if (!name) {
+      setLabelError('Please enter a label name.');
+      return;
+    }
+
+    const duplicateLabel = labels.some(
+      (label) => label.name.trim().toLowerCase() === name.toLowerCase(),
+    );
+
+    if (duplicateLabel) {
+      setLabelError('A label with this name already exists.');
+      return;
+    }
+
+    const createdLabel = addLabel({
+      name,
+      color: newLabel.color,
+    });
+
+    if (!createdLabel) return;
+
+    setFormData((previous) => ({
+      ...previous,
+      labelIds: [...new Set([...(previous.labelIds ?? []), createdLabel.id])],
+    }));
+
+    setNewLabel({
+      name: '',
+      color: LABEL_COLORS[0],
+    });
+
+    setLabelError('');
+    setIsCreatingLabel(false);
   }
 
   function handleChange(event) {
@@ -398,59 +469,158 @@ export default function TaskFormModal({
         </div>
 
         {/* Labels */}
-        <fieldset className='space-y-2'>
-          <legend className='text-sm font-medium text-foreground'>
-            Labels
-            <span className='ml-1 font-normal text-muted-foreground'>
-              (Optional)
-            </span>
-          </legend>
+        <div className='space-y-3'>
+          <fieldset className='space-y-2'>
+            <legend className='text-sm font-medium text-foreground'>
+              Labels
+              <span className='ml-1 font-normal text-muted-foreground'>
+                (Optional)
+              </span>
+            </legend>
 
-          {labels.length > 0 ? (
-            <div className='flex flex-wrap gap-2'>
-              {labels.map((label) => {
-                const isSelected = (formData.labelIds ?? []).includes(label.id);
+            {labels.length > 0 ? (
+              <div className='flex flex-wrap gap-2'>
+                {labels.map((label) => {
+                  const isSelected = (formData.labelIds ?? []).includes(
+                    label.id,
+                  );
 
-                return (
-                  <button
-                    key={label.id}
-                    type='button'
-                    onClick={() => handleLabelToggle(label.id)}
-                    aria-pressed={isSelected}
-                    className={`
-              rounded-full border px-3 py-1.5 text-xs font-medium
-              transition-all
-              ${
-                isSelected
-                  ? 'ring-2 ring-primary/30 ring-offset-1'
-                  : 'opacity-70 hover:opacity-100'
-              }
-            `}
-                    style={{
-                      backgroundColor: `${label.color}20`,
-                      borderColor: label.color,
-                      color: label.color,
-                    }}
-                  >
-                    {label.name}
-                    {isSelected && ' ✓'}
-                  </button>
-                );
-              })}
+                  return (
+                    <button
+                      key={label.id}
+                      type='button'
+                      onClick={() => handleLabelToggle(label.id)}
+                      aria-pressed={isSelected}
+                      className={`
+                rounded-full border px-3 py-1.5 text-xs font-medium
+                transition-all
+                ${
+                  isSelected
+                    ? 'ring-2 ring-primary/30 ring-offset-1'
+                    : 'opacity-70 hover:opacity-100'
+                }
+              `}
+                      style={{
+                        backgroundColor: `${label.color}20`,
+                        borderColor: label.color,
+                        color: label.color,
+                      }}
+                    >
+                      {label.name}
+                      {isSelected && ' ✓'}
+                    </button>
+                  );
+                })}
+              </div>
+            ) : (
+              <p className='text-xs text-muted-foreground'>
+                No labels available. Create one below.
+              </p>
+            )}
+
+            {(formData.labelIds ?? []).length > 0 && (
+              <p className='text-xs text-muted-foreground'>
+                {formData.labelIds.length}{' '}
+                {formData.labelIds.length === 1 ? 'label' : 'labels'} selected
+              </p>
+            )}
+          </fieldset>
+
+          {/* Create label toggle */}
+          <button
+            type='button'
+            onClick={() => {
+              setIsCreatingLabel((previous) => !previous);
+              setLabelError('');
+            }}
+            className='inline-flex items-center gap-1.5 text-sm font-medium text-primary transition hover:opacity-80'
+          >
+            {isCreatingLabel ? <X size={15} /> : <Plus size={15} />}
+            {isCreatingLabel ? 'Cancel label creation' : 'Create new label'}
+          </button>
+
+          {/* Inline label creation */}
+          {isCreatingLabel && (
+            <div className='space-y-4 rounded-lg border border-border bg-surface-secondary p-4'>
+              <div>
+                <h3 className='text-sm font-semibold text-foreground'>
+                  New label
+                </h3>
+
+                <p className='mt-1 text-xs text-muted-foreground'>
+                  Create a label and automatically assign it to this task.
+                </p>
+              </div>
+
+              <div className='space-y-1.5'>
+                <label
+                  htmlFor='new-label-name'
+                  className='text-sm font-medium text-foreground'
+                >
+                  Label name
+                </label>
+
+                <Input
+                  id='new-label-name'
+                  name='name'
+                  placeholder='e.g. Urgent, Personal, Research'
+                  value={newLabel.name}
+                  onChange={handleNewLabelChange}
+                />
+
+                {labelError && (
+                  <p className='text-xs text-danger'>{labelError}</p>
+                )}
+              </div>
+
+              <fieldset className='space-y-2'>
+                <legend className='text-sm font-medium text-foreground'>
+                  Label colour
+                </legend>
+
+                <div className='flex flex-wrap gap-3'>
+                  {LABEL_COLORS.map((color) => (
+                    <button
+                      key={color}
+                      type='button'
+                      onClick={() =>
+                        setNewLabel((previous) => ({
+                          ...previous,
+                          color,
+                        }))
+                      }
+                      aria-label={`Select colour ${color}`}
+                      aria-pressed={newLabel.color === color}
+                      className={`size-7 rounded-full transition ${
+                        newLabel.color === color
+                          ? 'ring-2 ring-primary ring-offset-2 ring-offset-surface-secondary'
+                          : 'hover:scale-110'
+                      }`}
+                      style={{ backgroundColor: color }}
+                    />
+                  ))}
+                </div>
+              </fieldset>
+
+              <div className='flex justify-end gap-2'>
+                <Button
+                  type='button'
+                  variant='secondary'
+                  onClick={() => {
+                    setIsCreatingLabel(false);
+                    setLabelError('');
+                  }}
+                >
+                  Cancel
+                </Button>
+
+                <Button type='button' onClick={handleCreateLabel}>
+                  Create & assign
+                </Button>
+              </div>
             </div>
-          ) : (
-            <p className='text-xs text-muted-foreground'>
-              No labels available. Create labels from the Labels page.
-            </p>
           )}
-
-          {(formData.labelIds ?? []).length > 0 && (
-            <p className='text-xs text-muted-foreground'>
-              {formData.labelIds.length}{' '}
-              {formData.labelIds.length === 1 ? 'label' : 'labels'} selected
-            </p>
-          )}
-        </fieldset>
+        </div>
 
         <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
           <Input

@@ -6,6 +6,7 @@ import {
   Pencil,
   Trash2,
   X,
+  Tag,
 } from 'lucide-react';
 
 import { Badge, Button, Checkbox } from '../../../components/ui';
@@ -15,7 +16,6 @@ import TaskFormModal from './TaskFormModal';
 
 import { usePreferences } from '../../preferences/usePreferences';
 
-import { Tag } from 'lucide-react';
 import { useLabels } from '../../labels/useLabels';
 import TaskLabels from '../../labels/components/TaskLabels';
 
