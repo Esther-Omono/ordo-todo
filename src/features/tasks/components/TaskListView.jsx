@@ -10,6 +10,7 @@ import { useTasks } from '../useTasks';
 export default function TaskListView({
   title,
   description,
+  headerContent,
   tasks,
   defaultProjectId = null,
   emptyTitle = 'No tasks yet',
@@ -28,13 +29,17 @@ export default function TaskListView({
       <div className='mx-auto w-full max-w-5xl space-y-7'>
         {/* Page heading */}
         <header className='flex items-center justify-between gap-4'>
-          <div className='min-w-0'>
-            <h2 className='text-2xl font-semibold tracking-tight text-foreground'>
-              {title}
-            </h2>
+          {headerContent ?? (
+            <div className='min-w-0'>
+              <h2 className='text-2xl font-semibold tracking-tight text-foreground'>
+                {title}
+              </h2>
 
-            <p className='mt-1 text-sm text-muted-foreground'>{description}</p>
-          </div>
+              <p className='mt-1 text-sm text-muted-foreground'>
+                {description}
+              </p>
+            </div>
+          )}
 
           <Button onClick={() => setIsCreating(true)}>
             <Plus size={17} />

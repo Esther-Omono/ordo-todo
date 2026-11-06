@@ -5,9 +5,12 @@ import { useLabels } from '../useLabels';
 import { useTasks } from '../../tasks/useTasks';
 import LabelFormModal from './LabelFormModal';
 
+import { useNavigate } from 'react-router-dom';
+
 export default function LabelCard({ label }) {
   const { deleteLabel } = useLabels();
   const { tasks } = useTasks();
+  const navigate = useNavigate();
 
   const [isEditing, setIsEditing] = useState(false);
   const [showActions, setShowActions] = useState(false);
@@ -95,7 +98,7 @@ export default function LabelCard({ label }) {
           </div>
         </div>
 
-        <div className='mt-5 flex items-center justify-between'>
+        <div className='mt-5 flex items-center justify-between gap-3'>
           <span
             className='rounded-full px-2.5 py-1 text-xs font-medium'
             style={{
@@ -106,9 +109,13 @@ export default function LabelCard({ label }) {
             {label.name}
           </span>
 
-          <span className='text-xs text-muted-foreground'>
-            {labelTasks.length} assigned
-          </span>
+          <button
+            type='button'
+            onClick={() => navigate(`/labels/${label.id}`)}
+            className='text-xs font-semibold text-primary transition hover:opacity-75'
+          >
+            View tasks ({labelTasks.length})
+          </button>
         </div>
       </article>
 
