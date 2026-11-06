@@ -7,6 +7,7 @@ import {
   Settings,
   Calendar,
   Tag,
+  TrendingUp,
 } from 'lucide-react';
 
 export const mainNavigation = [
@@ -45,6 +46,11 @@ export const mainNavigation = [
     path: '/calendar',
     icon: Calendar,
   },
+  {
+    label: 'Productivity',
+    path: '/productivity',
+    icon: TrendingUp,
+  },
 ];
 
 export const secondaryNavigation = [
@@ -66,5 +72,6 @@ export const moreNavigation = [
   mainNavigation[3], // Completed
   mainNavigation[5], // Labels
   mainNavigation[6], // Calendar
+  mainNavigation[7], // Productivity
   secondaryNavigation[0], // Settings
 ];

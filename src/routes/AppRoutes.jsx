@@ -11,6 +11,7 @@ import ProjectDetails from '../pages/ProjectDetails';
 import Labels from '../pages/Labels';
 import LabelTasks from '../pages/LabelTasks';
 import Calendar from '../pages/Calendar';
+import Productivity from '../pages/Productivity';
 import Settings from '../pages/Settings';
 
 import NotFound from '../pages/NotFound';
@@ -34,6 +35,7 @@ function AppRoutes() {
           <Route path='/labels/:labelId' element={<LabelTasks />} />
 
           <Route path='/calendar' element={<Calendar />} />
+          <Route path='/productivity' element={<Productivity />} />
           <Route path='/settings' element={<Settings />} />
         </Route>
 
