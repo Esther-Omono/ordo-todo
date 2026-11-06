@@ -22,8 +22,8 @@ export function LabelProvider({ children }) {
     const now = new Date().toISOString();
 
     const newLabel = {
-      id: crypto.randomUUID(),
       ...labelData,
+      id: crypto.randomUUID(),
       name,
       color: labelData.color ?? 'violet',
       createdAt: now,
@@ -39,6 +39,10 @@ export function LabelProvider({ children }) {
   }
 
   function updateLabel(id, updates) {
+    if (updates.name !== undefined && !updates.name.trim()) {
+      return;
+    }
+
     const normalizedUpdates = {
       ...updates,
       ...(updates.name !== undefined && {
@@ -49,10 +53,7 @@ export function LabelProvider({ children }) {
 
     dispatch({
       type: 'UPDATE_LABEL',
-      payload: {
-        id,
-        updates: normalizedUpdates,
-      },
+      payload: { id, updates: normalizedUpdates },
     });
   }
 
