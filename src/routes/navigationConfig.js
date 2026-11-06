@@ -7,7 +7,6 @@ import {
   Settings,
   Calendar,
   Tag,
-  MoreHorizontal,
 } from 'lucide-react';
 
 export const mainNavigation = [
@@ -57,9 +56,15 @@ export const secondaryNavigation = [
 ];
 
 export const mobileNavigation = [
-  mainNavigation[0],
-  mainNavigation[1],
-  mainNavigation[2],
-  mainNavigation[4],
-  secondaryNavigation[0],
+  mainNavigation[0], // Today
+  mainNavigation[1], // Upcoming
+  mainNavigation[2], // All Tasks
+  mainNavigation[4], // Projects
+];
+
+export const moreNavigation = [
+  mainNavigation[3], // Completed
+  mainNavigation[5], // Labels
+  mainNavigation[6], // Calendar
+  secondaryNavigation[0], // Settings
 ];
