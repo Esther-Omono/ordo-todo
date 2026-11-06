@@ -6,6 +6,8 @@ import {
   FolderKanban,
   Settings,
   Calendar,
+  Tag,
+  MoreHorizontal,
 } from 'lucide-react';
 
 export const mainNavigation = [
@@ -33,6 +35,11 @@ export const mainNavigation = [
     label: 'Projects',
     path: '/projects',
     icon: FolderKanban,
+  },
+  {
+    label: 'Labels',
+    path: '/labels',
+    icon: Tag,
   },
   {
     label: 'Calendar',

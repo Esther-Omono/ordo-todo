@@ -8,6 +8,7 @@ import AllTasks from '../pages/AllTasks';
 import Completed from '../pages/Completed';
 import Projects from '../pages/Projects';
 import ProjectDetails from '../pages/ProjectDetails';
+import Labels from '../pages/Labels';
 import Calendar from '../pages/Calendar';
 import Settings from '../pages/Settings';
 
@@ -28,6 +29,7 @@ function AppRoutes() {
           <Route path='/projects' element={<Projects />} />
           <Route path='/projects/:projectId' element={<ProjectDetails />} />
 
+          <Route path='/labels' element={<Labels />} />
           <Route path='/calendar' element={<Calendar />} />
           <Route path='/settings' element={<Settings />} />
         </Route>
