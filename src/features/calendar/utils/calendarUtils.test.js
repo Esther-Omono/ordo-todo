@@ -75,4 +75,79 @@ describe('Calendar utilities', () => {
 
     expect(result.every((task) => task.dueDate)).toBe(true);
   });
+
+  it('shows a monthly recurring task in subsequent months', () => {
+    const recurringTask = {
+      id: 'monthly-1',
+      title: 'Pay rent',
+      dueDate: '2026-11-05',
+      completed: false,
+      recurrence: {
+        frequency: 'monthly',
+        interval: 1,
+        endDate: null,
+      },
+    };
+
+    expect(
+      getTasksForDate([recurringTask], new Date(2026, 10, 5)),
+    ).toHaveLength(1);
+
+    expect(
+      getTasksForDate([recurringTask], new Date(2026, 11, 5)),
+    ).toHaveLength(1);
+
+    expect(getTasksForDate([recurringTask], new Date(2027, 0, 5))).toHaveLength(
+      1,
+    );
+  });
+
+  it('does not show monthly recurring tasks on the wrong day', () => {
+    const recurringTask = {
+      id: 'monthly-1',
+      dueDate: '2026-11-05',
+      completed: false,
+      recurrence: {
+        frequency: 'monthly',
+        interval: 1,
+      },
+    };
+
+    expect(
+      getTasksForDate([recurringTask], new Date(2026, 11, 6)),
+    ).toHaveLength(0);
+  });
+
+  it('respects the recurrence end date', () => {
+    const recurringTask = {
+      id: 'monthly-1',
+      dueDate: '2026-11-05',
+      completed: false,
+      recurrence: {
+        frequency: 'monthly',
+        interval: 1,
+        endDate: '2026-12-05',
+      },
+    };
+
+    expect(getTasksForDate([recurringTask], new Date(2027, 0, 5))).toHaveLength(
+      0,
+    );
+  });
+
+  it('does not show completed occurrences on future dates', () => {
+    const recurringTask = {
+      id: 'monthly-1',
+      dueDate: '2026-11-05',
+      completed: true,
+      recurrence: {
+        frequency: 'monthly',
+        interval: 1,
+      },
+    };
+
+    expect(
+      getTasksForDate([recurringTask], new Date(2026, 11, 5)),
+    ).toHaveLength(0);
+  });
 });
