@@ -155,4 +155,89 @@ describe('taskReducer', () => {
 
     expect(result[0].subtasks).toHaveLength(0);
   });
+
+  it('adds the next occurrence when a recurring task is completed', () => {
+    const task = {
+      id: 'task-1',
+      title: 'Daily planning',
+      completed: false,
+      recurrence: { frequency: 'daily', interval: 1 },
+    };
+
+    const nextTask = {
+      id: 'task-2',
+      title: 'Daily planning',
+      completed: false,
+      recurringSeriesId: 'task-1',
+      occurrenceDate: '2026-11-08',
+    };
+
+    const result = taskReducer([task], {
+      type: 'TOGGLE_TASK_COMPLETION',
+      payload: {
+        id: 'task-1',
+        completedAt: '2026-11-07T10:00:00.000Z',
+        nextTask,
+      },
+    });
+
+    expect(result).toHaveLength(2);
+    expect(result[0].completed).toBe(true);
+    expect(result[1]).toEqual(nextTask);
+  });
+
+  it('does not add a duplicate occurrence', () => {
+    const task = {
+      id: 'task-1',
+      title: 'Daily planning',
+      completed: false,
+    };
+
+    const existingOccurrence = {
+      id: 'task-2',
+      recurringSeriesId: 'task-1',
+      occurrenceDate: '2026-11-08',
+    };
+
+    const duplicateOccurrence = {
+      id: 'task-3',
+      recurringSeriesId: 'task-1',
+      occurrenceDate: '2026-11-08',
+    };
+
+    const result = taskReducer([task, existingOccurrence], {
+      type: 'TOGGLE_TASK_COMPLETION',
+      payload: {
+        id: 'task-1',
+        completedAt: '2026-11-07T10:00:00.000Z',
+        nextTask: duplicateOccurrence,
+      },
+    });
+
+    expect(result).toHaveLength(2);
+    expect(result.some((item) => item.id === 'task-3')).toBe(false);
+  });
+
+  it('does not generate a successor when a task is unchecked', () => {
+    const task = {
+      id: 'task-1',
+      title: 'Daily planning',
+      completed: true,
+    };
+
+    const result = taskReducer([task], {
+      type: 'TOGGLE_TASK_COMPLETION',
+      payload: {
+        id: 'task-1',
+        nextTask: {
+          id: 'task-2',
+          recurringSeriesId: 'task-1',
+          occurrenceDate: '2026-11-08',
+        },
+      },
+    });
+
+    expect(result).toHaveLength(1);
+    expect(result[0].completed).toBe(false);
+  });
 });

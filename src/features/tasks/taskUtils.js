@@ -20,9 +20,10 @@ export function createSubtask(title) {
 
 export function createTask(fields = {}) {
   const timestamp = getCurrentTimestamp();
+  const id = generateId();
 
   return {
-    id: generateId(),
+    id,
     title: fields.title?.trim() ?? '',
     description: fields.description ?? '',
     priority: fields.priority ?? 'medium',
@@ -37,5 +38,12 @@ export function createTask(fields = {}) {
     subtasks: [],
     createdAt: timestamp,
     updatedAt: timestamp,
+    recurrence: fields.recurrence ?? null,
+    recurringSeriesId: fields.recurrence
+      ? (fields.recurringSeriesId ?? id)
+      : null,
+    occurrenceDate: fields.recurrence
+      ? (fields.occurrenceDate ?? fields.dueDate ?? null)
+      : null,
   };
 }

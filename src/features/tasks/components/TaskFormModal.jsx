@@ -32,6 +32,7 @@ const getInitialFormData = (
   dueDate: task?.dueDate ?? defaultDueDate,
   dueTime: task?.dueTime ?? '',
   priority: task?.priority ?? defaultPriority,
+  recurrence: task?.recurrence ?? null,
 });
 
 export default function TaskFormModal({
@@ -209,6 +210,13 @@ export default function TaskFormModal({
       labelIds: [...new Set(formData.labelIds ?? [])],
       dueDate: formData.dueDate || null,
       dueTime: formData.dueTime || null,
+      recurrence: formData.recurrence,
+      recurringSeriesId: formData.recurrence
+        ? (task?.recurringSeriesId ?? task?.id ?? null)
+        : null,
+      occurrenceDate: formData.recurrence
+        ? (task?.occurrenceDate ?? formData.dueDate ?? null)
+        : null,
     };
 
     if (isEditing) {
@@ -218,6 +226,31 @@ export default function TaskFormModal({
     }
 
     onClose();
+  }
+
+  function updateRecurrence(updates) {
+    setFormData((previous) => ({
+      ...previous,
+      recurrence: {
+        frequency: 'daily',
+        interval: 1,
+        daysOfWeek: [],
+        endDate: null,
+        unit: 'day',
+        ...previous.recurrence,
+        ...updates,
+      },
+    }));
+  }
+
+  function toggleRecurrenceDay(day) {
+    const selectedDays = formData.recurrence?.daysOfWeek ?? [];
+
+    const daysOfWeek = selectedDays.includes(day)
+      ? selectedDays.filter((item) => item !== day)
+      : [...selectedDays, day];
+
+    updateRecurrence({ daysOfWeek });
   }
 
   return (
@@ -638,6 +671,139 @@ export default function TaskFormModal({
             value={formData.dueTime}
             onChange={handleChange}
           />
+        </div>
+
+        <div className='space-y-3'>
+          <label className='block text-sm font-medium text-foreground'>
+            Repeat
+          </label>
+
+          <select
+            value={formData.recurrence?.frequency ?? 'none'}
+            onChange={(event) => {
+              const frequency = event.target.value;
+
+              setFormData((previous) => ({
+                ...previous,
+                recurrence:
+                  frequency === 'none'
+                    ? null
+                    : {
+                        frequency,
+                        interval: 1,
+                        daysOfWeek: [],
+                        endDate: null,
+                        unit: 'day',
+                      },
+              }));
+            }}
+            className='w-full rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground'
+          >
+            <option value='none'>Does not repeat</option>
+            <option value='daily'>Daily</option>
+            <option value='weekly'>Weekly</option>
+            <option value='monthly'>Monthly</option>
+            <option value='custom'>Custom</option>
+          </select>
+
+          {formData.recurrence && (
+            <div className='space-y-3 rounded-lg border border-border p-3'>
+              <div className='flex items-center gap-2'>
+                <span className='text-sm text-muted-foreground'>Every</span>
+
+                <Input
+                  type='number'
+                  min='1'
+                  value={formData.recurrence.interval}
+                  onChange={(event) =>
+                    updateRecurrence({
+                      interval: Math.max(1, Number(event.target.value)),
+                    })
+                  }
+                />
+
+                {formData.recurrence.frequency === 'custom' ? (
+                  <select
+                    value={formData.recurrence.unit ?? 'day'}
+                    onChange={(event) =>
+                      updateRecurrence({ unit: event.target.value })
+                    }
+                    className='rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground'
+                  >
+                    <option value='day'>Days</option>
+                    <option value='week'>Weeks</option>
+                    <option value='month'>Months</option>
+                  </select>
+                ) : (
+                  <span className='text-sm text-muted-foreground'>
+                    {formData.recurrence.frequency === 'daily' && 'day(s)'}
+                    {formData.recurrence.frequency === 'weekly' && 'week(s)'}
+                    {formData.recurrence.frequency === 'monthly' && 'month(s)'}
+                  </span>
+                )}
+              </div>
+
+              {formData.recurrence.frequency === 'weekly' && (
+                <div className='space-y-2'>
+                  <p className='text-sm font-medium text-foreground'>
+                    Repeat on
+                  </p>
+
+                  <div className='flex flex-wrap gap-2'>
+                    {[
+                      { label: 'Sun', value: 0 },
+                      { label: 'Mon', value: 1 },
+                      { label: 'Tue', value: 2 },
+                      { label: 'Wed', value: 3 },
+                      { label: 'Thu', value: 4 },
+                      { label: 'Fri', value: 5 },
+                      { label: 'Sat', value: 6 },
+                    ].map((day) => {
+                      const selected = formData.recurrence.daysOfWeek?.includes(
+                        day.value,
+                      );
+
+                      return (
+                        <button
+                          key={day.value}
+                          type='button'
+                          onClick={() => toggleRecurrenceDay(day.value)}
+                          className={`rounded-full border px-3 py-1.5 text-xs ${
+                            selected
+                              ? 'border-primary bg-primary text-white'
+                              : 'border-border text-muted-foreground'
+                          }`}
+                        >
+                          {day.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  <p className='text-xs text-muted-foreground'>
+                    Leave all days unselected to repeat on the same weekday.
+                  </p>
+                </div>
+              )}
+
+              <div className='space-y-1'>
+                <label className='block text-sm font-medium text-foreground'>
+                  Ends on (optional)
+                </label>
+
+                <Input
+                  type='date'
+                  value={formData.recurrence.endDate ?? ''}
+                  min={formData.dueDate || undefined}
+                  onChange={(event) =>
+                    updateRecurrence({
+                      endDate: event.target.value || null,
+                    })
+                  }
+                />
+              </div>
+            </div>
+          )}
         </div>
       </form>
     </Modal>

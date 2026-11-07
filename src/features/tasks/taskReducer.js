@@ -21,19 +21,42 @@ export function taskReducer(state, action) {
     case 'DELETE_TASK':
       return state.filter((task) => task.id !== action.payload);
 
-    case 'TOGGLE_TASK_COMPLETION':
-      return state.map((task) => {
-        if (task.id !== action.payload) return task;
+    case 'TOGGLE_TASK_COMPLETION': {
+      const { id, completedAt, nextTask } =
+        typeof action.payload === 'string'
+          ? { id: action.payload, completedAt: null, nextTask: null }
+          : action.payload;
 
-        const completed = !task.completed;
+      const task = state.find((item) => item.id === id);
 
-        return {
-          ...task,
-          completed,
-          completedAt: completed ? getCurrentTimestamp() : null,
-          updatedAt: getCurrentTimestamp(),
-        };
-      });
+      if (!task) return state;
+
+      const completed = !task.completed;
+
+      const updatedTasks = state.map((item) =>
+        item.id === id
+          ? {
+              ...item,
+              completed,
+              completedAt: completed
+                ? (completedAt ?? getCurrentTimestamp())
+                : null,
+              updatedAt: getCurrentTimestamp(),
+            }
+          : item,
+      );
+
+      if (!completed || !nextTask) return updatedTasks;
+
+      // Prevent duplicate occurrences if a task is unchecked and completed again.
+      const alreadyExists = updatedTasks.some(
+        (item) =>
+          item.recurringSeriesId === nextTask.recurringSeriesId &&
+          item.occurrenceDate === nextTask.occurrenceDate,
+      );
+
+      return alreadyExists ? updatedTasks : [...updatedTasks, nextTask];
+    }
 
     case 'ADD_SUBTASK':
       return state.map((task) =>

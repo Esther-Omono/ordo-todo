@@ -1,8 +1,9 @@
 import { useEffect, useReducer } from 'react';
 import { TaskContext } from './taskContext';
 import { taskReducer } from './taskReducer';
-import { createTask, createSubtask } from './taskUtils';
+import { getCurrentTimestamp, createTask, createSubtask } from './taskUtils';
 import { storageService } from '../../services/storageService';
+import { createNextOccurrence, getNextOccurrenceDate } from './recurrenceUtils';
 
 export const TASKS_STORAGE_KEY = 'ordo-tasks';
 
@@ -45,9 +46,26 @@ export function TaskProvider({ children }) {
   }
 
   function toggleTaskCompletion(id) {
+    const task = tasks.find((item) => item.id === id);
+
+    let nextTask = null;
+
+    // Only prepare a successor when transitioning from incomplete to complete.
+    if (task && !task.completed && task.recurrence) {
+      const nextDate = getNextOccurrenceDate(task);
+
+      if (nextDate) {
+        nextTask = createNextOccurrence(task, nextDate, createTask);
+      }
+    }
+
     dispatch({
       type: 'TOGGLE_TASK_COMPLETION',
-      payload: id,
+      payload: {
+        id,
+        completedAt: getCurrentTimestamp(),
+        nextTask,
+      },
     });
   }
 

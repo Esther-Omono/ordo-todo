@@ -73,6 +73,46 @@ function TaskDetailsDrawer({ task, onClose, projects = [] }) {
     onClose();
   };
 
+  function getRecurrenceDescription(recurrence) {
+    const interval = recurrence.interval || 1;
+
+    if (recurrence.frequency === 'daily') {
+      return interval === 1 ? 'daily' : `every ${interval} days`;
+    }
+
+    if (recurrence.frequency === 'weekly') {
+      const days = recurrence.daysOfWeek ?? [];
+
+      if (days.length > 0) {
+        const names = [
+          'Sunday',
+          'Monday',
+          'Tuesday',
+          'Wednesday',
+          'Thursday',
+          'Friday',
+          'Saturday',
+        ];
+        return `every ${interval === 1 ? '' : `${interval} weeks on `}${days.map((day) => names[day]).join(', ')}`;
+      }
+
+      return interval === 1 ? 'weekly' : `every ${interval} weeks`;
+    }
+
+    if (recurrence.frequency === 'monthly') {
+      return interval === 1 ? 'monthly' : `every ${interval} months`;
+    }
+
+    if (recurrence.frequency === 'custom') {
+      const unit = recurrence.unit ?? 'day';
+      const plural = interval === 1 ? unit : `${unit}s`;
+
+      return `every ${interval} ${plural}`;
+    }
+
+    return 'on a custom schedule';
+  }
+
   return (
     <>
       <div
@@ -192,6 +232,27 @@ function TaskDetailsDrawer({ task, onClose, projects = [] }) {
                 <Clock3 size={18} className='text-muted-foreground' />
                 <span className='text-sm'>{task.dueTime || 'No due time'}</span>
               </div>
+
+              {task.recurrence && (
+                <div className='flex items-start gap-2'>
+                  <CalendarDays
+                    size={16}
+                    className='mt-0.5 text-muted-foreground'
+                  />
+
+                  <div>
+                    <p className='text-sm font-medium text-foreground'>
+                      Repeats {getRecurrenceDescription(task.recurrence)}
+                    </p>
+
+                    {task.recurrence.endDate && (
+                      <p className='text-xs text-muted-foreground'>
+                        Until {task.recurrence.endDate}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
           </section>
 
