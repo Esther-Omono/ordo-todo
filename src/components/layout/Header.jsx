@@ -1,4 +1,4 @@
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Bell } from 'lucide-react';
 import { Button, ThemeToggle } from '../ui';
 
@@ -9,10 +9,12 @@ const pageTitles = {
   '/completed': 'Completed',
   '/projects': 'Projects',
   '/settings': 'Settings',
+  '/calendar': 'Calendar',
 };
 
 export default function Header() {
   const { pathname } = useLocation();
+  const navigate = useNavigate();
 
   const pageTitle = pathname.startsWith('/projects/')
     ? 'Project Details'
@@ -39,9 +41,9 @@ export default function Header() {
         <Button
           variant='ghost'
           size='md'
-          aria-label='Notifications'
+          aria-label='Open notifications'
           title='Notifications'
-          disabled
+          onClick={() => navigate('/notifications')}
         >
           <Bell size={19} />
         </Button>

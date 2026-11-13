@@ -6,6 +6,7 @@ import { PreferencesProvider } from './features/preferences/PreferencesContext.j
 import { TaskProvider } from './features/tasks/TaskProvider.jsx';
 import { LabelProvider } from './features/labels/LabelProvider.jsx';
 import { ProjectProvider } from './features/projects/ProjectProvider.jsx';
+import { Toaster } from 'sonner';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -14,6 +15,12 @@ createRoot(document.getElementById('root')).render(
         <LabelProvider>
           <ProjectProvider>
             <App />
+            <Toaster
+              position='top-right'
+              richColors
+              closeButton
+              duration={4000}
+            />
           </ProjectProvider>
         </LabelProvider>
       </TaskProvider>

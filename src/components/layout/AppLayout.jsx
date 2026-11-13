@@ -2,8 +2,11 @@ import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Header from './Header';
 import MobileNavigation from './MobileNavigation';
+import { useReminderNotifications } from '../../features/reminders/useReminderNotifications';
 
 export default function AppLayout() {
+  useReminderNotifications({ runScheduler: true });
+
   return (
     <div className='flex h-dvh overflow-hidden bg-background'>
       <Sidebar />

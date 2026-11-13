@@ -5,6 +5,10 @@ import { useProjects } from '../../projects/useProjects';
 import { usePreferences } from '../../preferences/usePreferences';
 import { useLabels } from '../../labels/useLabels';
 import { Plus, X } from 'lucide-react';
+import {
+  toDateTimeLocalValue,
+  toISOStringFromLocal,
+} from '../../reminders/reminderUtils';
 
 const LABEL_COLORS = [
   '#BE123C',
@@ -33,6 +37,9 @@ const getInitialFormData = (
   dueTime: task?.dueTime ?? '',
   priority: task?.priority ?? defaultPriority,
   recurrence: task?.recurrence ?? null,
+
+  reminderEnabled: task?.reminder?.enabled ?? false,
+  reminderDateTime: toDateTimeLocalValue(task?.reminder?.dateTime),
 });
 
 export default function TaskFormModal({
@@ -202,6 +209,29 @@ export default function TaskFormModal({
       return;
     }
 
+    if (formData.reminderEnabled && !formData.reminderDateTime) {
+      setError('Please select a date and time for your reminder.');
+      return;
+    }
+
+    const reminderDateTime = formData.reminderEnabled
+      ? toISOStringFromLocal(formData.reminderDateTime)
+      : null;
+
+    if (formData.reminderEnabled && !reminderDateTime) {
+      setError('Please enter a valid reminder date and time.');
+      return;
+    }
+
+    const reminder = {
+      enabled: Boolean(formData.reminderEnabled && reminderDateTime),
+      dateTime: reminderDateTime,
+      notifiedAt:
+        task?.reminder?.dateTime === reminderDateTime
+          ? (task?.reminder?.notifiedAt ?? null)
+          : null,
+    };
+
     const taskData = {
       ...formData,
       title,
@@ -211,12 +241,16 @@ export default function TaskFormModal({
       dueDate: formData.dueDate || null,
       dueTime: formData.dueTime || null,
       recurrence: formData.recurrence,
+
       recurringSeriesId: formData.recurrence
         ? (task?.recurringSeriesId ?? task?.id ?? null)
         : null,
+
       occurrenceDate: formData.recurrence
         ? (task?.occurrenceDate ?? formData.dueDate ?? null)
         : null,
+
+      reminder,
     };
 
     if (isEditing) {
@@ -672,6 +706,68 @@ export default function TaskFormModal({
             onChange={handleChange}
           />
         </div>
+
+        {/* Task reminder */}
+        <section className='space-y-3 rounded-xl border border-border p-4'>
+          <div className='flex items-start justify-between gap-4'>
+            <div>
+              <h3 className='text-sm font-semibold text-foreground'>
+                Reminder
+              </h3>
+
+              <p className='mt-1 text-xs text-muted-foreground'>
+                Get notified when it's time to work on this task.
+              </p>
+            </div>
+
+            <input
+              type='checkbox'
+              checked={formData.reminderEnabled}
+              onChange={(event) => {
+                setFormData((previous) => ({
+                  ...previous,
+                  reminderEnabled: event.target.checked,
+                }));
+
+                setError('');
+              }}
+              className='mt-1 size-4 accent-primary'
+              aria-label='Enable task reminder'
+            />
+          </div>
+
+          {formData.reminderEnabled && (
+            <div className='space-y-2'>
+              <label
+                htmlFor='task-reminder'
+                className='block text-sm font-medium text-foreground'
+              >
+                Reminder date and time
+              </label>
+
+              <Input
+                id='task-reminder'
+                type='datetime-local'
+                value={formData.reminderDateTime}
+                onChange={(event) => {
+                  setFormData((previous) => ({
+                    ...previous,
+                    reminderDateTime: event.target.value,
+                  }));
+
+                  setError('');
+                }}
+                required
+              />
+
+              <p className='text-xs text-muted-foreground'>
+                Reminders are checked while Ordo is running.
+              </p>
+            </div>
+          )}
+
+          {error && <p className='text-xs text-danger'>{error}</p>}
+        </section>
 
         <div className='space-y-3'>
           <label className='block text-sm font-medium text-foreground'>

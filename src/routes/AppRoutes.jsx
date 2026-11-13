@@ -13,6 +13,7 @@ import LabelTasks from '../pages/LabelTasks';
 import Calendar from '../pages/Calendar';
 import Productivity from '../pages/Productivity';
 import Settings from '../pages/Settings';
+import Notifications from '../pages/Notifications';
 
 import NotFound from '../pages/NotFound';
 
@@ -37,6 +38,7 @@ function AppRoutes() {
           <Route path='/calendar' element={<Calendar />} />
           <Route path='/productivity' element={<Productivity />} />
           <Route path='/settings' element={<Settings />} />
+          <Route path='/notifications' element={<Notifications />} />
         </Route>
 
         <Route path='*' element={<NotFound />} />

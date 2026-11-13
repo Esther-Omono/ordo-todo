@@ -7,6 +7,8 @@ import {
   Trash2,
   X,
   Tag,
+  Bell,
+  BellOff,
 } from 'lucide-react';
 
 import { Badge, Button, Checkbox } from '../../../components/ui';
@@ -18,6 +20,8 @@ import { usePreferences } from '../../preferences/usePreferences';
 
 import { useLabels } from '../../labels/useLabels';
 import TaskLabels from '../../labels/components/TaskLabels';
+
+import { format } from 'date-fns';
 
 import {
   formatPreferenceDate,
@@ -231,6 +235,39 @@ function TaskDetailsDrawer({ task, onClose, projects = [] }) {
               <div className='flex items-center gap-3'>
                 <Clock3 size={18} className='text-muted-foreground' />
                 <span className='text-sm'>{task.dueTime || 'No due time'}</span>
+              </div>
+
+              <div className='flex items-start gap-3'>
+                {task.reminder?.enabled ? (
+                  <Bell size={18} className='mt-0.5 text-primary' />
+                ) : (
+                  <BellOff size={18} className='mt-0.5 text-muted-foreground' />
+                )}
+
+                <div className='min-w-0'>
+                  <p className='text-sm font-medium'>
+                    {task.reminder?.enabled
+                      ? 'Reminder enabled'
+                      : 'No reminder set'}
+                  </p>
+
+                  {task.reminder?.enabled && task.reminder?.dateTime && (
+                    <>
+                      <p className='mt-1 text-sm text-muted-foreground'>
+                        {format(
+                          new Date(task.reminder.dateTime),
+                          'EEEE, MMMM d, yyyy · h:mm a',
+                        )}
+                      </p>
+
+                      <p className='mt-1 text-xs text-muted-foreground'>
+                        {task.reminder.notifiedAt
+                          ? 'Reminder already triggered'
+                          : 'Waiting to notify'}
+                      </p>
+                    </>
+                  )}
+                </div>
               </div>
 
               {task.recurrence && (

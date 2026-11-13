@@ -36,8 +36,7 @@ export function createTask(fields = {}) {
     completed: false,
     completedAt: null,
     subtasks: [],
-    createdAt: timestamp,
-    updatedAt: timestamp,
+
     recurrence: fields.recurrence ?? null,
     recurringSeriesId: fields.recurrence
       ? (fields.recurringSeriesId ?? id)
@@ -45,5 +44,14 @@ export function createTask(fields = {}) {
     occurrenceDate: fields.recurrence
       ? (fields.occurrenceDate ?? fields.dueDate ?? null)
       : null,
+
+    reminder: {
+      enabled: Boolean(fields.reminder?.enabled && fields.reminder?.dateTime),
+      dateTime: fields.reminder?.dateTime ?? null,
+      notifiedAt: fields.reminder?.notifiedAt ?? null,
+    },
+
+    createdAt: timestamp,
+    updatedAt: timestamp,
   };
 }
