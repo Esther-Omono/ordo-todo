@@ -1,10 +1,15 @@
-import { useState } from 'react';
-import { Plus, ListTodo } from 'lucide-react';
+import { useState, useMemo } from 'react';
+import { Plus, ListTodo, Search, X } from 'lucide-react';
 
-import { Button } from '../../../components/ui';
+import { Button, Input } from '../../../components/ui';
+
 import TaskRow from './TaskRow';
 import TaskFormModal from './TaskFormModal';
+import TaskFilterBar from './TaskFilterBar';
+
 import { useTaskDetails } from '../hooks/useTaskDetails';
+import { useTaskFilters } from '../hooks/useTaskFilters';
+import { getFilteredTasks } from '../taskSelectors';
 
 export default function TaskListView({
   title,
@@ -18,9 +23,21 @@ export default function TaskListView({
   const [isCreating, setIsCreating] = useState(false);
   const { openTaskDetails } = useTaskDetails();
 
+  const { filters, updateFilter, clearFilters, activeFilterCount } =
+    useTaskFilters();
+
+  // Apply filters to the tasks supplied by the parent view.
+  const filteredTasks = useMemo(() => {
+    return getFilteredTasks(tasks, filters);
+  }, [tasks, filters]);
+
+  const hasTasks = tasks.length > 0;
+  const hasFilteredTasks = filteredTasks.length > 0;
+
   return (
     <>
       <div className='mx-auto w-full max-w-5xl space-y-7'>
+        {/* Header */}
         <header className='flex items-center justify-between gap-4'>
           {headerContent ?? (
             <div className='min-w-0'>
@@ -41,15 +58,50 @@ export default function TaskListView({
           </Button>
         </header>
 
-        <div className='flex items-center justify-between'>
-          <p className='text-sm font-medium text-muted-foreground'>
-            {tasks.length} {tasks.length === 1 ? 'task' : 'tasks'}
-          </p>
+        {/* Search */}
+        <div className='relative'>
+          <Search
+            size={17}
+            className='absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground'
+          />
+
+          <Input
+            placeholder='Search tasks...'
+            value={filters.search}
+            onChange={(event) => updateFilter('search', event.target.value)}
+            className='pl-10'
+          />
         </div>
 
-        {tasks.length > 0 ? (
+        {/* Advanced filters */}
+        <TaskFilterBar
+          filters={filters}
+          onFilterChange={updateFilter}
+          onClearFilters={clearFilters}
+        />
+
+        {/* Task count */}
+        <div className='flex items-center justify-between'>
+          <p className='text-sm font-medium text-muted-foreground'>
+            Showing {filteredTasks.length} of {tasks.length} tasks
+          </p>
+
+          {activeFilterCount > 0 && (
+            <button
+              type='button'
+              onClick={clearFilters}
+              className='inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline'
+            >
+              <X size={13} />
+              Clear filters
+            </button>
+          )}
+        </div>
+
+        {/* Task list */}
+        {hasFilteredTasks ? (
           <div className='overflow-hidden rounded-xl border border-border bg-surface'>
-            {tasks.map((task) => (
+            {filteredTasks.map((task) => (
               <TaskRow
                 key={task.id}
                 task={task}
@@ -64,25 +116,38 @@ export default function TaskListView({
             </div>
 
             <h3 className='text-base font-semibold text-foreground'>
-              {emptyTitle}
+              {hasTasks ? 'No matching tasks' : emptyTitle}
             </h3>
 
             <p className='mt-2 max-w-sm text-sm text-muted-foreground'>
-              {emptyDescription}
+              {hasTasks
+                ? 'Try adjusting your filters to find what you are looking for.'
+                : emptyDescription}
             </p>
 
-            <Button
-              variant='secondary'
-              className='mt-5'
-              onClick={() => setIsCreating(true)}
-            >
-              <Plus size={16} />
-              Create a task
-            </Button>
+            {hasTasks ? (
+              <Button
+                variant='secondary'
+                className='mt-5'
+                onClick={clearFilters}
+              >
+                Clear filters
+              </Button>
+            ) : (
+              <Button
+                variant='secondary'
+                className='mt-5'
+                onClick={() => setIsCreating(true)}
+              >
+                <Plus size={16} />
+                Create a task
+              </Button>
+            )}
           </div>
         )}
       </div>
 
+      {/* Task creation modal */}
       {isCreating && (
         <TaskFormModal
           isOpen={isCreating}
