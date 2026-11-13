@@ -1,16 +1,18 @@
-export function searchTasks(tasks, query) {
+export function searchTasks(tasks = [], query = '') {
   const normalizedQuery = query.trim().toLowerCase();
 
   if (!normalizedQuery) {
     return [];
   }
 
-  return tasks.filter((task) => {
-    const title = task.title?.toLowerCase() ?? '';
-    const description = task.description?.toLowerCase() ?? '';
+  const searchTerms = normalizedQuery.split(/\s+/).filter(Boolean);
 
-    return (
-      title.includes(normalizedQuery) || description.includes(normalizedQuery)
-    );
+  return tasks.filter((task) => {
+    const searchableText = [task.title, task.description]
+      .filter(Boolean)
+      .join(' ')
+      .toLowerCase();
+
+    return searchTerms.every((term) => searchableText.includes(term));
   });
 }

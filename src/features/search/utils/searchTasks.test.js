@@ -38,6 +38,18 @@ describe('searchTasks', () => {
     expect(searchTasks(tasks, '  portfolio  ')).toHaveLength(1);
   });
 
+  it('supports multiple search terms', () => {
+    expect(searchTasks(tasks, 'portfolio finish')).toHaveLength(1);
+  });
+
+  it('matches multiple terms across title and description', () => {
+    expect(searchTasks(tasks, 'portfolio ordo')).toHaveLength(1);
+  });
+
+  it('requires all search terms to match', () => {
+    expect(searchTasks(tasks, 'portfolio groceries')).toHaveLength(0);
+  });
+
   it('returns an empty array for an empty query', () => {
     expect(searchTasks(tasks, '')).toEqual([]);
     expect(searchTasks(tasks, '   ')).toEqual([]);
@@ -51,5 +63,13 @@ describe('searchTasks', () => {
     const tasksWithoutDescription = [{ id: '4', title: 'Review application' }];
 
     expect(searchTasks(tasksWithoutDescription, 'application')).toHaveLength(1);
+  });
+
+  it('handles an empty task collection', () => {
+    expect(searchTasks([], 'portfolio')).toEqual([]);
+  });
+
+  it('handles tasks with missing titles and descriptions', () => {
+    expect(searchTasks([{ id: '5' }], 'anything')).toEqual([]);
   });
 });
