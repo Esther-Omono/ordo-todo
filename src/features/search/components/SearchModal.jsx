@@ -12,34 +12,31 @@ export default function SearchModal({ isOpen, onClose, onSelect }) {
     useTaskSearch();
 
   useEffect(() => {
-    if (!isOpen) return;
-
-    inputRef.current?.focus();
-    setActiveIndex(0);
+    if (isOpen) {
+      inputRef.current?.focus();
+    }
   }, [isOpen]);
 
-  useEffect(() => {
-    if (!isOpen) {
-      clearSearch();
-      setActiveIndex(0);
-    }
-  }, [isOpen, clearSearch]);
-
-  useEffect(() => {
-    setActiveIndex(0);
-  }, [query]);
+  const safeActiveIndex =
+    results.length > 0 && activeIndex < results.length ? activeIndex : 0;
 
   if (!isOpen) return null;
 
+  function handleClose() {
+    clearSearch();
+    setActiveIndex(0);
+    onClose();
+  }
+
   function handleSelect(task) {
     onSelect?.(task);
-    onClose();
+    handleClose();
   }
 
   function handleKeyDown(event) {
     if (event.key === 'Escape') {
       event.preventDefault();
-      onClose();
+      handleClose();
       return;
     }
 
@@ -47,28 +44,23 @@ export default function SearchModal({ isOpen, onClose, onSelect }) {
 
     if (event.key === 'ArrowDown') {
       event.preventDefault();
-
       setActiveIndex((previous) =>
         previous >= results.length - 1 ? 0 : previous + 1,
       );
-
       return;
     }
 
     if (event.key === 'ArrowUp') {
       event.preventDefault();
-
       setActiveIndex((previous) =>
         previous <= 0 ? results.length - 1 : previous - 1,
       );
-
       return;
     }
 
     if (event.key === 'Enter') {
       event.preventDefault();
-
-      const selectedTask = results[activeIndex];
+      const selectedTask = results[safeActiveIndex];
 
       if (selectedTask) {
         handleSelect(selectedTask);
@@ -113,7 +105,10 @@ export default function SearchModal({ isOpen, onClose, onSelect }) {
             aria-label='Search tasks'
             autoComplete='off'
             value={query}
-            onChange={(event) => setQuery(event.target.value)}
+            onChange={(event) => {
+              setQuery(event.target.value);
+              setActiveIndex(0);
+            }}
             onKeyDown={handleKeyDown}
             placeholder='Search your tasks...'
             className='h-14 min-w-0 flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground'
