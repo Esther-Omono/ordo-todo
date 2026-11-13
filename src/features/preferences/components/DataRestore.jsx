@@ -8,9 +8,9 @@ import {
 } from 'lucide-react';
 
 import { Button } from '../../../components/ui';
-import { useTasks } from '../../tasks/useTasks';
-import { useProjects } from '../../projects/useProjects';
-import { usePreferences } from '../usePreferences';
+import { useTasks } from '../../tasks/hooks/useTasks';
+import { useProjects } from '../../projects/hooks/useProjects';
+import { usePreferences } from '../hooks/usePreferences';
 import { readBackupFile } from '../dataBackup';
 
 export default function DataRestore() {

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button, Modal } from '../../../components/ui';
-import { useProjects } from '../useProjects';
+import { useProjects } from '../hooks/useProjects';
 
 const PROJECT_COLORS = [
   '#8B5CF6',

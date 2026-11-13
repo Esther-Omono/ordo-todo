@@ -5,7 +5,7 @@ import { Button } from '../../../components/ui';
 import TaskRow from './TaskRow';
 import TaskFormModal from './TaskFormModal';
 import TaskDetailsDrawer from './TaskDetailsDrawer';
-import { useTasks } from '../useTasks';
+import { useTasks } from '../hooks/useTasks';
 
 export default function TaskListView({
   title,

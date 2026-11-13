@@ -1,9 +1,9 @@
 import { useEffect, useReducer } from 'react';
 
 import { ProjectContext } from './projectContext';
-import { projectReducer } from './projectReducer';
-import { loadProjects, saveProjects } from './projectStorage';
-import { useTasks } from '../tasks/useTasks';
+import { projectReducer } from '../projectReducer';
+import { loadProjects, saveProjects } from '../projectStorage';
+import { useTasks } from '../../tasks/hooks/useTasks';
 
 export function ProjectProvider({ children }) {
   const [projects, dispatch] = useReducer(

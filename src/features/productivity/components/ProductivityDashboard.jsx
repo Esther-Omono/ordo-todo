@@ -6,7 +6,7 @@ import {
   Target,
 } from 'lucide-react';
 
-import { useTasks } from '../../tasks/useTasks';
+import { useTasks } from '../../tasks/hooks/useTasks';
 import { getTaskStatistics } from '../utils/productivityUtils';
 import ProductivityStatCard from './ProductivityStatCard';
 

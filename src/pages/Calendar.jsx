@@ -3,8 +3,8 @@ import { ChevronLeft, ChevronRight, CalendarDays, Plus } from 'lucide-react';
 import { format, startOfWeek, endOfWeek } from 'date-fns';
 
 import { useCalendarNavigation } from '../features/calendar/hooks/useCalendarNavigation';
-import { useTasks } from '../features/tasks/useTasks';
-import { useProjects } from '../features/projects/useProjects';
+import { useTasks } from '../features/tasks/hooks/useTasks';
+import { useProjects } from '../features/projects/hooks/useProjects';
 
 import CalendarMonthView from '../features/calendar/components/CalendarMonthView';
 import CalendarWeekView from '../features/calendar/components/CalendarWeekView';
@@ -15,7 +15,7 @@ import { Button } from '../components/ui';
 import TaskDetailsDrawer from '../features/tasks/components/TaskDetailsDrawer';
 import TaskFormModal from '../features/tasks/components/TaskFormModal';
 
-import { usePreferences } from '../features/preferences/usePreferences';
+import { usePreferences } from '../features/preferences/hooks/usePreferences';
 import { formatPreferenceDate } from '../features/preferences/dateFormatting';
 
 const views = ['month', 'week', 'day'];

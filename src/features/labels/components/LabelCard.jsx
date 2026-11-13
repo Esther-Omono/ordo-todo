@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { MoreHorizontal, Pencil, Trash2, Tag } from 'lucide-react';
 
-import { useLabels } from '../useLabels';
-import { useTasks } from '../../tasks/useTasks';
+import { useLabels } from '../hooks/useLabels';
+import { useTasks } from '../../tasks/hooks/useTasks';
 import LabelFormModal from './LabelFormModal';
 
 import { useNavigate } from 'react-router-dom';

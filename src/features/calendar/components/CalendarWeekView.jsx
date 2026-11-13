@@ -1,7 +1,7 @@
 import { format, isSameDay, isToday } from 'date-fns';
 
 import { getWeekDays, getTasksForDate } from '../utils/calendarUtils';
-import { usePreferences } from '../../preferences/usePreferences';
+import { usePreferences } from '../../preferences/hooks/usePreferences';
 import { formatPreferenceDate } from '../../preferences/dateFormatting';
 
 const priorityStyles = {

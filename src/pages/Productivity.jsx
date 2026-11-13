@@ -1,8 +1,8 @@
 import ProductivityDashboard from '../features/productivity/components/ProductivityDashboard';
 import ProductivityCharts from '../features/productivity/components/ProductivityCharts';
 
-import { useTasks } from '../features/tasks/useTasks';
-import { useProjects } from '../features/projects/useProjects';
+import { useTasks } from '../features/tasks/hooks/useTasks';
+import { useProjects } from '../features/projects/hooks/useProjects';
 
 import {
   getDailyCompletionTrend,

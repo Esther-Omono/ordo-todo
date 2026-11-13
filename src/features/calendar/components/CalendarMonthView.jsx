@@ -1,6 +1,6 @@
 import { getMonthDays, getTasksForDate } from '../utils/calendarUtils';
 import CalendarDayCell from './CalendarDayCell';
-import { usePreferences } from '../../preferences/usePreferences';
+import { usePreferences } from '../../preferences/hooks/usePreferences';
 
 const weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 

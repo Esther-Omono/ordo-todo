@@ -1,8 +1,11 @@
 import { useEffect, useReducer } from 'react';
 
-import { initialPreferences, preferencesReducer } from './preferencesReducer';
+import { initialPreferences, preferencesReducer } from '../preferencesReducer';
 
-import { storageService, PREFERENCES_KEY } from '../../services/storageService';
+import {
+  storageService,
+  PREFERENCES_KEY,
+} from '../../../services/storageService';
 
 import { PreferencesContext } from './preferencesContext';
 

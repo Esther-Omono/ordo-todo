@@ -1,4 +1,4 @@
-import { useTasks } from '../features/tasks/useTasks';
+import { useTasks } from '../features/tasks/hooks/useTasks';
 import { getCompletedTasks, sortTasks } from '../features/tasks/taskSelectors';
 import TaskListView from '../features/tasks/components/TaskListView';
 

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Plus, FolderKanban } from 'lucide-react';
 
 import { Button } from '../components/ui';
-import { useProjects } from '../features/projects/useProjects';
+import { useProjects } from '../features/projects/hooks/useProjects';
 import { ProjectCard, ProjectFormModal } from '../features/projects/components';
 
 export default function Projects() {

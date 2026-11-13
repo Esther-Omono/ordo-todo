@@ -8,12 +8,12 @@ import {
 } from 'lucide-react';
 
 import { Badge, Checkbox, Dropdown } from '../../../components/ui';
-import { useTasks } from '../useTasks';
+import { useTasks } from '../hooks/useTasks';
 import TaskFormModal from './TaskFormModal';
 
-import { usePreferences } from '../../preferences/usePreferences';
+import { usePreferences } from '../../preferences/hooks/usePreferences';
 import { formatPreferenceDate } from '../../preferences/dateFormatting';
-import { useLabels } from '../../labels/useLabels';
+import { useLabels } from '../../labels/hooks/useLabels';
 import TaskLabels from '../../labels/components/TaskLabels';
 
 const priorityVariants = {

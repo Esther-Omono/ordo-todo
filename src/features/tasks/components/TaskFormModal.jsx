@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Button, Input, Modal } from '../../../components/ui';
-import { useTasks } from '../useTasks';
-import { useProjects } from '../../projects/useProjects';
-import { usePreferences } from '../../preferences/usePreferences';
-import { useLabels } from '../../labels/useLabels';
+import { useTasks } from '../hooks/useTasks';
+import { useProjects } from '../../projects/hooks/useProjects';
+import { usePreferences } from '../../preferences/hooks/usePreferences';
+import { useLabels } from '../../labels/hooks/useLabels';
 import { Plus, X } from 'lucide-react';
 import {
   toDateTimeLocalValue,

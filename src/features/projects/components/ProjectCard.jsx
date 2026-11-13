@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MoreHorizontal, Pencil, Trash2, ArrowUpRight } from 'lucide-react';
 
-import { useProjects } from '../useProjects';
-import { useTasks } from '../../tasks/useTasks';
+import { useProjects } from '../hooks/useProjects';
+import { useTasks } from '../../tasks/hooks/useTasks';
 import ProjectFormModal from './ProjectFormModal';
 
 export default function ProjectCard({ project }) {

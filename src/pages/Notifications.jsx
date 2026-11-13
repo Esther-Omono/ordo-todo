@@ -3,7 +3,7 @@ import { Bell, BellRing, Clock, CheckCircle2, AlertCircle } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { Button } from '../components/ui';
-import { useTasks } from '../features/tasks/useTasks';
+import { useTasks } from '../features/tasks/hooks/useTasks';
 import { useReminderNotifications } from '../features/reminders/useReminderNotifications';
 
 import { format, isBefore, isValid } from 'date-fns';

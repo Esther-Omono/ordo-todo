@@ -1,4 +1,4 @@
-import { getCurrentTimestamp } from './taskUtils';
+import { getCurrentTimestamp } from './utils/taskUtils';
 
 export function taskReducer(state, action) {
   switch (action.type) {

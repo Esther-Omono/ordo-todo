@@ -1,5 +1,5 @@
 import { storageService, PREFERENCES_KEY } from '../../services/storageService';
-import { TASKS_STORAGE_KEY } from '../tasks/TaskProvider';
+import { TASKS_STORAGE_KEY } from '../tasks/context/TaskProvider';
 
 const PROJECTS_STORAGE_KEY = 'ordo-projects';
 

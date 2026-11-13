@@ -3,7 +3,7 @@ import { format, isToday } from 'date-fns';
 import { getTasksForDate } from '../utils/calendarUtils';
 import { CalendarDays, Clock3, CircleCheck, ListTodo } from 'lucide-react';
 
-import { usePreferences } from '../../preferences/usePreferences';
+import { usePreferences } from '../../preferences/hooks/usePreferences';
 import { formatPreferenceDate } from '../../preferences/dateFormatting';
 
 function sortTasks(tasks) {

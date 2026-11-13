@@ -12,13 +12,13 @@ import {
 } from 'lucide-react';
 
 import { Badge, Button, Checkbox } from '../../../components/ui';
-import { useTasks } from '../useTasks';
+import { useTasks } from '../hooks/useTasks';
 import SubtaskManager from './SubtaskManager';
 import TaskFormModal from './TaskFormModal';
 
-import { usePreferences } from '../../preferences/usePreferences';
+import { usePreferences } from '../../preferences/hooks/usePreferences';
 
-import { useLabels } from '../../labels/useLabels';
+import { useLabels } from '../../labels/hooks/useLabels';
 import TaskLabels from '../../labels/components/TaskLabels';
 
 import { format } from 'date-fns';

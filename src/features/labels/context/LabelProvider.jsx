@@ -1,9 +1,9 @@
 import { useEffect, useReducer } from 'react';
 
 import { LabelContext } from './labelContext';
-import { labelReducer } from './labelReducer';
-import { loadLabels, saveLabels } from './labelStorage';
-import { useTasks } from '../tasks/useTasks';
+import { labelReducer } from '../labelReducer';
+import { loadLabels, saveLabels } from '../labelStorage';
+import { useTasks } from '../../tasks/hooks/useTasks';
 
 export function LabelProvider({ children }) {
   const [labels, dispatch] = useReducer(labelReducer, undefined, loadLabels);

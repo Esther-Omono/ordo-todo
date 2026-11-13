@@ -9,8 +9,8 @@ import {
   Trash2,
 } from 'lucide-react';
 
-import { useProjects } from '../features/projects/useProjects';
-import { useTasks } from '../features/tasks/useTasks';
+import { useProjects } from '../features/projects/hooks/useProjects';
+import { useTasks } from '../features/tasks/hooks/useTasks';
 import ProjectFormModal from '../features/projects/components/ProjectFormModal';
 import TaskListView from '../features/tasks/components/TaskListView';
 

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import { Button, Input, Modal } from '../../../components/ui';
-import { useLabels } from '../useLabels';
+import { useLabels } from '../hooks/useLabels';
 
 const LABEL_COLORS = [
   '#BE123C',

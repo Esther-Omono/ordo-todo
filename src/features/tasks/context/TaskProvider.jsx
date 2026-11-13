@@ -1,9 +1,16 @@
 import { useEffect, useReducer } from 'react';
 import { TaskContext } from './taskContext';
-import { taskReducer } from './taskReducer';
-import { getCurrentTimestamp, createTask, createSubtask } from './taskUtils';
-import { storageService } from '../../services/storageService';
-import { createNextOccurrence, getNextOccurrenceDate } from './recurrenceUtils';
+import { taskReducer } from '../taskReducer';
+import {
+  getCurrentTimestamp,
+  createTask,
+  createSubtask,
+} from '../utils/taskUtils';
+import { storageService } from '../../../services/storageService';
+import {
+  createNextOccurrence,
+  getNextOccurrenceDate,
+} from '../utils/recurrenceUtils';
 
 export const TASKS_STORAGE_KEY = 'ordo-tasks';
 

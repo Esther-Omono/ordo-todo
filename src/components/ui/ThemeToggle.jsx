@@ -1,5 +1,5 @@
 import { Moon, Sun } from 'lucide-react';
-import { usePreferences } from '../../features/preferences/usePreferences';
+import { usePreferences } from '../../features/preferences/hooks/usePreferences';
 import Button from './Button';
 
 export default function ThemeToggle() {

@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { LabelContext } from './labelContext';
+import { LabelContext } from '../context/labelContext';
 
 export function useLabels() {
   const context = useContext(LabelContext);

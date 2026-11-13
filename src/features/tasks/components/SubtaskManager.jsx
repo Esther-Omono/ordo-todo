@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Plus, Pencil, Trash2, Check, X } from 'lucide-react';
 
 import { Button, Checkbox, Input } from '../../../components/ui';
-import { useTasks } from '../useTasks';
+import { useTasks } from '../hooks/useTasks';
 import { getSubtaskProgress } from '../taskSelectors';
 
 export default function SubtaskManager({ task }) {

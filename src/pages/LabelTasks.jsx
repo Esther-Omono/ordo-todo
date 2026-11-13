@@ -2,8 +2,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft, Tag } from 'lucide-react';
 
 import { Button } from '../components/ui';
-import { useLabels } from '../features/labels/useLabels';
-import { useTasks } from '../features/tasks/useTasks';
+import { useLabels } from '../features/labels/hooks/useLabels';
+import { useTasks } from '../features/tasks/hooks/useTasks';
 import TaskListView from '../features/tasks/components/TaskListView';
 
 export default function LabelTasks() {

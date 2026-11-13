@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Plus, Tag } from 'lucide-react';
 
 import { Button } from '../components/ui';
-import { useLabels } from '../features/labels/useLabels';
+import { useLabels } from '../features/labels/hooks/useLabels';
 import { LabelCard, LabelFormModal } from '../features/labels/components/index';
 
 export default function Labels() {

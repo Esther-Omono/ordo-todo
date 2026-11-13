@@ -6,7 +6,7 @@ import {
   Download,
 } from 'lucide-react';
 
-import { usePreferences } from '../features/preferences/usePreferences';
+import { usePreferences } from '../features/preferences/hooks/usePreferences';
 
 import { Button } from '../components/ui';
 import { exportBackup } from '../features/preferences/dataBackup';

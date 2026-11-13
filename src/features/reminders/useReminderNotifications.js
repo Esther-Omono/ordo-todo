@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 
-import { useTasks } from '../tasks/useTasks';
+import { useTasks } from '../tasks/hooks/useTasks';
 
 import {
   getNotificationPermission,
