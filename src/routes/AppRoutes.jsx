@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import AppLayout from '../components/layout/AppLayout';
 
 import Today from '../pages/Today';
+import Overdue from '../pages/Overdue';
 import Upcoming from '../pages/Upcoming';
 import AllTasks from '../pages/AllTasks';
 import Completed from '../pages/Completed';
@@ -25,6 +26,7 @@ function AppRoutes() {
           <Route path='/' element={<Navigate to='/today' replace />} />
 
           <Route path='/today' element={<Today />} />
+          <Route path='/overdue' element={<Overdue />} />
           <Route path='/upcoming' element={<Upcoming />} />
           <Route path='/tasks' element={<AllTasks />} />
           <Route path='/completed' element={<Completed />} />

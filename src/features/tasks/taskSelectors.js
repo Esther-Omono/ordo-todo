@@ -137,25 +137,25 @@ export function sortTasks(tasks, sortBy = 'createdAt', direction = 'asc') {
 }
 
 export function getTodayTasks(tasks) {
-  const today = startOfDay(new Date());
+  const today = format(new Date(), 'yyyy-MM-dd');
 
-  return tasks.filter((task) => {
-    if (task.completed || !task.dueDate) return false;
+  return tasks.filter((task) => !task.completed && task.dueDate === today);
+}
 
-    const dueDate = parseISO(task.dueDate);
+export function getOverdueTasks(tasks) {
+  const today = format(new Date(), 'yyyy-MM-dd');
 
-    return isToday(dueDate) || isBefore(dueDate, today);
-  });
+  return tasks.filter(
+    (task) => !task.completed && task.dueDate && task.dueDate < today,
+  );
 }
 
 export function getUpcomingTasks(tasks) {
-  const today = startOfDay(new Date());
+  const today = format(new Date(), 'yyyy-MM-dd');
 
-  return tasks.filter((task) => {
-    if (task.completed || !task.dueDate) return false;
-
-    return isAfter(parseISO(task.dueDate), today);
-  });
+  return tasks.filter(
+    (task) => !task.completed && task.dueDate && task.dueDate > today,
+  );
 }
 
 export function getCompletedTasks(tasks) {

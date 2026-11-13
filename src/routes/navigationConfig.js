@@ -8,6 +8,7 @@ import {
   Calendar,
   Tag,
   TrendingUp,
+  AlertCircle,
 } from 'lucide-react';
 
 export const mainNavigation = [
@@ -15,6 +16,11 @@ export const mainNavigation = [
     label: 'Today',
     path: '/today',
     icon: CalendarDays,
+  },
+  {
+    label: 'Overdue',
+    path: '/overdue',
+    icon: AlertCircle,
   },
   {
     label: 'Upcoming',
@@ -63,15 +69,16 @@ export const secondaryNavigation = [
 
 export const mobileNavigation = [
   mainNavigation[0], // Today
-  mainNavigation[1], // Upcoming
-  mainNavigation[2], // All Tasks
-  mainNavigation[4], // Projects
+  mainNavigation[1], // Overdue
+  mainNavigation[2], // Upcoming
+  mainNavigation[3], // All Tasks
 ];
 
 export const moreNavigation = [
-  mainNavigation[3], // Completed
-  mainNavigation[5], // Labels
-  mainNavigation[6], // Calendar
-  mainNavigation[7], // Productivity
+  mainNavigation[4], // Completed
+  mainNavigation[5], // Projects
+  mainNavigation[6], // Labels
+  mainNavigation[7], // Calendar
+  mainNavigation[8], // Productivity
   secondaryNavigation[0], // Settings
 ];
