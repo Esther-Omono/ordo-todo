@@ -1,6 +1,8 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Bell } from 'lucide-react';
+
 import { Button, ThemeToggle } from '../ui';
+import SearchButton from '../../features/search/components/SearchButton';
 
 const pageTitles = {
   '/today': 'Today',
@@ -36,6 +38,8 @@ export default function Header() {
       </div>
 
       <div className='flex items-center gap-2'>
+        <SearchButton />
+
         <ThemeToggle />
 
         <Button

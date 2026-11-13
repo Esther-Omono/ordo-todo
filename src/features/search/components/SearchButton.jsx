@@ -2,10 +2,16 @@ import { useState } from 'react';
 import { Search } from 'lucide-react';
 
 import { Button } from '../../../components/ui';
+import { useTaskDetails } from '../../tasks/hooks/useTaskDetails';
 import SearchModal from './SearchModal';
 
 export default function SearchButton() {
   const [isOpen, setIsOpen] = useState(false);
+  const { openTaskDetails } = useTaskDetails();
+
+  function handleSelectTask(task) {
+    openTaskDetails(task);
+  }
 
   return (
     <>
@@ -19,7 +25,11 @@ export default function SearchButton() {
         <Search size={19} />
       </Button>
 
-      <SearchModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      <SearchModal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        onSelect={handleSelectTask}
+      />
     </>
   );
 }

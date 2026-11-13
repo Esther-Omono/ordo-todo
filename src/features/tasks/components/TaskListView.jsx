@@ -4,8 +4,7 @@ import { Plus, ListTodo } from 'lucide-react';
 import { Button } from '../../../components/ui';
 import TaskRow from './TaskRow';
 import TaskFormModal from './TaskFormModal';
-import TaskDetailsDrawer from './TaskDetailsDrawer';
-import { useTasks } from '../hooks/useTasks';
+import { useTaskDetails } from '../hooks/useTaskDetails';
 
 export default function TaskListView({
   title,
@@ -16,18 +15,12 @@ export default function TaskListView({
   emptyTitle = 'No tasks yet',
   emptyDescription = 'Your tasks will appear here.',
 }) {
-  const { tasks: allTasks } = useTasks();
-
   const [isCreating, setIsCreating] = useState(false);
-  const [selectedTaskId, setSelectedTaskId] = useState(null);
-
-  const selectedTask =
-    allTasks.find((task) => task.id === selectedTaskId) ?? null;
+  const { openTaskDetails } = useTaskDetails();
 
   return (
     <>
       <div className='mx-auto w-full max-w-5xl space-y-7'>
-        {/* Page heading */}
         <header className='flex items-center justify-between gap-4'>
           {headerContent ?? (
             <div className='min-w-0'>
@@ -48,23 +41,19 @@ export default function TaskListView({
           </Button>
         </header>
 
-        {/* Task count */}
         <div className='flex items-center justify-between'>
           <p className='text-sm font-medium text-muted-foreground'>
             {tasks.length} {tasks.length === 1 ? 'task' : 'tasks'}
           </p>
         </div>
 
-        {/* Task list */}
         {tasks.length > 0 ? (
           <div className='overflow-hidden rounded-xl border border-border bg-surface'>
             {tasks.map((task) => (
               <TaskRow
                 key={task.id}
                 task={task}
-                onOpenDetails={(selectedTask) =>
-                  setSelectedTaskId(selectedTask.id)
-                }
+                onOpenDetails={openTaskDetails}
               />
             ))}
           </div>
@@ -94,7 +83,6 @@ export default function TaskListView({
         )}
       </div>
 
-      {/* Create task */}
       {isCreating && (
         <TaskFormModal
           isOpen={isCreating}
@@ -102,13 +90,6 @@ export default function TaskListView({
           defaultProjectId={defaultProjectId}
         />
       )}
-
-      {/* Task details */}
-      <TaskDetailsDrawer
-        task={selectedTask}
-        onClose={() => setSelectedTaskId(null)}
-        defaultProjectId={defaultProjectId}
-      />
     </>
   );
 }

@@ -1,6 +1,5 @@
 import { useCallback, useMemo, useState } from 'react';
-
-import { useTasks } from '../../tasks/useTasks';
+import { useTasks } from '../../tasks/hooks/useTasks';
 import { searchTasks } from '../utils/searchTasks';
 
 export function useTaskSearch() {

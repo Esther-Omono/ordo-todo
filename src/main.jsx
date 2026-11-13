@@ -7,6 +7,7 @@ import { TaskProvider } from './features/tasks/context/TaskProvider.jsx';
 import { LabelProvider } from './features/labels/context/LabelProvider.jsx';
 import { ProjectProvider } from './features/projects/context/ProjectProvider.jsx';
 import { Toaster } from 'sonner';
+import { TaskDetailsProvider } from './features/tasks/context/TaskDetailsProvider.jsx';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -14,7 +15,9 @@ createRoot(document.getElementById('root')).render(
       <TaskProvider>
         <LabelProvider>
           <ProjectProvider>
-            <App />
+            <TaskDetailsProvider>
+              <App />
+            </TaskDetailsProvider>
             <Toaster
               position='top-right'
               richColors
