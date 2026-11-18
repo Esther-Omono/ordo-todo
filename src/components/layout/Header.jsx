@@ -1,26 +1,12 @@
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { Bell } from 'lucide-react';
 
 import { Button, ThemeToggle } from '../ui';
 import SearchButton from '../../features/search/components/SearchButton';
-
-const pageTitles = {
-  '/today': 'Today',
-  '/upcoming': 'Upcoming',
-  '/tasks': 'All Tasks',
-  '/completed': 'Completed',
-  '/projects': 'Projects',
-  '/settings': 'Settings',
-  '/calendar': 'Calendar',
-};
+import Logo from '../ui/Logo';
 
 export default function Header() {
-  const { pathname } = useLocation();
   const navigate = useNavigate();
-
-  const pageTitle = pathname.startsWith('/projects/')
-    ? 'Project Details'
-    : pageTitles[pathname] || 'Ordo';
 
   return (
     <header
@@ -29,22 +15,20 @@ export default function Header() {
       border-b border-border bg-surface px-5 sm:px-8
     '
     >
-      <div>
-        <h1 className='text-lg font-semibold text-foreground'>{pageTitle}</h1>
-
-        <p className='hidden text-xs text-muted-foreground sm:block'>
-          Stay organised. Make progress.
-        </p>
+      <div className='origin-left scale-90 sm:scale-100 lg:hidden'>
+        <Link to='/today' className='focus-visible:outline-none'>
+          <Logo />
+        </Link>
       </div>
 
-      <div className='flex items-center gap-2'>
+      <div className='ml-auto flex items-center gap-1 sm:gap-2'>
         <SearchButton />
 
         <ThemeToggle />
 
         <Button
           variant='ghost'
-          size='md'
+          size='sm'
           aria-label='Open notifications'
           title='Notifications'
           onClick={() => navigate('/notifications')}

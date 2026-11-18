@@ -15,7 +15,6 @@ export default function ThemeToggle() {
       title={`Switch to ${isDark ? 'light' : 'dark'} theme`}
     >
       {isDark ? <Sun size={18} /> : <Moon size={18} />}
-      <span>{isDark ? 'Light mode' : 'Dark mode'}</span>
     </Button>
   );
 }

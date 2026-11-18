@@ -4,6 +4,7 @@ import {
   secondaryNavigation,
 } from '../../routes/navigationConfig';
 import NavigationItem from './NavigationItem';
+import Logo from '../ui/Logo';
 
 export default function Sidebar() {
   return (
@@ -16,11 +17,8 @@ export default function Sidebar() {
     >
       {/* Brand */}
       <div className='flex h-20 items-center px-7'>
-        <Link
-          to='/today'
-          className='text-2xl font-bold tracking-tight text-primary'
-        >
-          ordo<span className='text-foreground'>.</span>
+        <Link to='/today'>
+          <Logo />
         </Link>
       </div>
 
